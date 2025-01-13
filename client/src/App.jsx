@@ -13,6 +13,11 @@ import ForgotPassword from "./pages/Auth/ForgotPassword";
 
 import AdminRoute from "./components/Routes/AdminRoute";
 import AdminDashboard from "./pages/Admin/AdminDashboard";
+import CreateCategory from "./pages/Admin/CreateCategory";
+import CreateProduct from "./pages/Admin/CreateProduct";
+import Users from "./pages/Admin/Users";
+import Profile from "./pages/user/Profile";
+import Orders from "./pages/user/Orders";
 
 function App() {
   return (
@@ -36,6 +41,22 @@ function App() {
             </PrivateRoute>
           }
         />
+        <Route
+          path="/dashboard/user/profile"
+          element={
+            <PrivateRoute>
+              <Profile />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/dashboard/user/orders"
+          element={
+            <PrivateRoute>
+              <Orders />
+            </PrivateRoute>
+          }
+        />
 
         {/* Admin Dashboard - AdminRoute */}
         <Route
@@ -43,6 +64,30 @@ function App() {
           element={
             <AdminRoute>
               <AdminDashboard />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path="/dashboard/admin/create-category"
+          element={
+            <AdminRoute>
+              <CreateCategory />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path="/dashboard/admin/create-product"
+          element={
+            <AdminRoute>
+              <CreateProduct />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path="/dashboard/admin/users"
+          element={
+            <AdminRoute>
+              <Users />
             </AdminRoute>
           }
         />

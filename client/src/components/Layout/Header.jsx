@@ -70,7 +70,7 @@ const Header = () => {
   to={
     auth?.user?.role === 1
       ? "/dashboard/admin" // Admin path
-      : "/dashboard" // User path
+      : "/dashboard/user" // User path
   }
 >
   Dashboard

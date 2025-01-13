@@ -139,8 +139,13 @@ export const forgotPasswordController = async (req, res) => {
     });
     if (!user) {
       return res.status(404).send({
-        message: "User not found"
+        message: "User Not Found!"
       });
+    }
+    if(!answer){
+      return res.status(404).send({
+        message: "Incorrect Security Answer"
+      })
     }
 
     // Update password

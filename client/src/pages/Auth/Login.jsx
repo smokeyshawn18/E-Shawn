@@ -4,7 +4,8 @@ import axios from "axios";
 import { toast } from "react-hot-toast";
 import { useAuth } from "../../context/Auth";
 import Layout from "../../components/Layout/Layout";
-import { Mail, Lock, ArrowRight, LogIn } from "lucide-react";
+import { Mail, Lock, ArrowRight } from "lucide-react";
+import Logo from "../../assets/Logo.png";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -42,37 +43,49 @@ const Login = () => {
         toast.error(res.data.message);
       }
     } catch (error) {
-      const errorMessage = error.response?.data?.message || "Something went wrong";
+      const errorMessage =
+        error.response?.data?.message || "Something went wrong";
       toast.error(errorMessage);
     }
   };
 
   return (
     <Layout title="Login - E-Shawn">
-      <div className="min-vh-100 d-flex align-items-center justify-content-center py-5" 
-           style={{ 
-             background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-             backgroundSize: "cover"
-           }}>
+      <div
+        className="min-vh-100 d-flex align-items-center justify-content-center py-5"
+        style={{
+          background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+          backgroundSize: "cover",
+        }}
+      >
         <div className="container">
           <div className="row justify-content-center">
             <div className="col-12 col-md-6 col-lg-5">
               <div className="text-center mb-4">
-                <LogIn size={40} className="text-white" />
+                <img
+                  src={Logo}
+                  alt="E-Shawn"
+                  className="img-fluid rounded mx-auto d-block"
+                  style={{ width: "100px", height: "100px" }}
+                />
                 <h1 className="text-white mb-2 mt-3">Welcome Back!</h1>
                 <p className="text-white-50">We're excited to see you again</p>
               </div>
 
-              <div className="card border-0" 
-                   style={{ 
-                     background: "rgba(255, 255, 255, 0.95)",
-                     backdropFilter: "blur(10px)",
-                     borderRadius: "16px"
-                   }}>
+              <div
+                className="card border-0"
+                style={{
+                  background: "rgba(255, 255, 255, 0.95)",
+                  backdropFilter: "blur(10px)",
+                  borderRadius: "16px",
+                }}
+              >
                 <div className="card-body p-4 p-md-5">
                   <form onSubmit={handleSubmit} className="needs-validation">
                     <div className="mb-4">
-                      <label htmlFor="email" className="form-label fw-semibold">Email Address</label>
+                      <label htmlFor="email" className="form-label fw-semibold">
+                        Email Address
+                      </label>
                       <div className="input-group input-group-lg">
                         <span className="input-group-text bg-white border-end-0">
                           <Mail className="text-primary" size={20} />
@@ -92,7 +105,12 @@ const Login = () => {
 
                     <div className="mb-4">
                       <div className="d-flex justify-content-between align-items-center">
-                        <label htmlFor="password" className="form-label fw-semibold">Password</label>
+                        <label
+                          htmlFor="password"
+                          className="form-label fw-semibold"
+                        >
+                          Password
+                        </label>
                         <button
                           type="button"
                           onClick={() => navigate("/forgot-password")}
@@ -122,10 +140,11 @@ const Login = () => {
                     <button
                       type="submit"
                       className="btn btn-primary w-100 btn-lg mb-4 position-relative overflow-hidden"
-                      style={{ 
-                        background: "linear-gradient(to right, #667eea, #764ba2)",
+                      style={{
+                        background:
+                          "linear-gradient(to right, #667eea, #764ba2)",
                         border: "none",
-                        height: "54px"
+                        height: "54px",
                       }}
                     >
                       <span className="d-flex align-items-center justify-content-center">
@@ -136,9 +155,11 @@ const Login = () => {
 
                     <div className="text-center">
                       <p className="mb-0">
-                        <span className="text-muted">New to our platform? </span>
-                        <Link 
-                          to="/register" 
+                        <span className="text-muted">
+                          New to our platform?{" "}
+                        </span>
+                        <Link
+                          to="/register"
                           className="text-decoration-none fw-semibold"
                           style={{ color: "#667eea" }}
                         >

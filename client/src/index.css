@@ -27,8 +27,20 @@ body {
 }
 
 .active {
-  border-bottom: 2px solid black;
+  border-bottom: 3px solid black;
 }
+/* Add this in your custom CSS */
+/* Ensure cards take full width on small screens */
+.card {
+  max-width: 100%;
+  width: 100%;
+}
+
+/* Add padding to prevent content from touching the screen edges */
+/* .container-fluid {
+  padding-left: 15px;
+  padding-right: 15px;
+} */
 
 .navbar-brand {
   font-weight: bold;

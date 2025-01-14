@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import Logo from "../../assets/Logo.png";
 
 const Footer = () => {
   return (
@@ -12,6 +13,12 @@ const Footer = () => {
       }}
     >
       <div className="container text-center">
+        <img
+          src={Logo}
+          alt="E-Shawn"
+          className="img-fluid rounded mx-auto d-block mb-3"
+          style={{ width: "100px", height: "100px" }}
+        />
         {/* Footer Title */}
         <h1
           className="text-white mb-3"
@@ -21,7 +28,7 @@ const Footer = () => {
             letterSpacing: "2px",
           }}
         >
-          All Rights Reserved &copy; smokeyshawn
+          All Rights Reserved &copy; E-Shawn.
         </h1>
 
         {/* Footer Links */}

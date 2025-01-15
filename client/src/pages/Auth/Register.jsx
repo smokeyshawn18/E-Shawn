@@ -21,10 +21,12 @@ const Register = () => {
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
   const [answer, setAnswer] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
       const API = import.meta.env.VITE_API;
       const payload = { name, email, password, phone, address, answer };
@@ -40,6 +42,7 @@ const Register = () => {
         error.response?.data?.message || "Something went wrong";
       toast.error(errorMessage);
     }
+    setLoading(false);
   };
 
   return (
@@ -47,7 +50,8 @@ const Register = () => {
       <div
         className="min-vh-100 d-flex align-items-center justify-content-center py-5"
         style={{
-          background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+          background:
+            "linear-gradient(135deg,rgb(37, 209, 129) 0%,rgb(39, 167, 206) 100%)",
           backgroundSize: "cover",
         }}
       >
@@ -62,7 +66,9 @@ const Register = () => {
                   style={{ width: "100px", height: "100px" }}
                 />
                 <h1 className="text-white mb-2 mt-3">Create Account</h1>
-                <p className="text-white-50">Join our community today</p>
+                <p className="text-dark fw-bold">
+                  Join E-Shawn! Your best products store.
+                </p>
               </div>
 
               <div
@@ -217,12 +223,26 @@ const Register = () => {
                           "linear-gradient(to right, #667eea, #764ba2)",
                         border: "none",
                         height: "54px",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
                       }}
+                      disabled={loading}
                     >
-                      <span className="d-flex align-items-center justify-content-center">
-                        Create Account
-                        <ArrowRight className="ms-2" size={20} />
-                      </span>
+                      {loading ? (
+                        <div
+                          className="spinner-border text-light"
+                          role="status"
+                          style={{ width: "1.5rem", height: "1.5rem" }}
+                        >
+                          <span className="visually-hidden">Loading...</span>
+                        </div>
+                      ) : (
+                        <span className="d-flex align-items-center justify-content-center">
+                          Create Account
+                          <ArrowRight className="ms-2" size={20} />
+                        </span>
+                      )}
                     </button>
 
                     <div className="text-center">

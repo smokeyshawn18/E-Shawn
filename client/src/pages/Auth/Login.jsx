@@ -4,19 +4,21 @@ import axios from "axios";
 import { toast } from "react-hot-toast";
 import { useAuth } from "../../context/Auth";
 import Layout from "../../components/Layout/Layout";
-import { Mail, Lock, ArrowRight } from "lucide-react";
+import { Mail, Lock, ArrowRight, Loader } from "lucide-react";
 import Logo from "../../assets/Logo.png";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [auth, setAuth] = useAuth();
+  const [loading, setLoading] = useState(false); // Loading state
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true); // Set loading to true when submission starts
     try {
-      const API = import.meta.env.VITE_API;
+      const API = import.meta.env.VITE_API || "http://localhost:8000";
       const payload = { email, password };
       const res = await axios.post(`${API}/api/v1/auth/login`, payload);
 
@@ -46,6 +48,8 @@ const Login = () => {
       const errorMessage =
         error.response?.data?.message || "Something went wrong";
       toast.error(errorMessage);
+    } finally {
+      setLoading(false); // Set loading to false after submission completes
     }
   };
 
@@ -54,7 +58,8 @@ const Login = () => {
       <div
         className="min-vh-100 d-flex align-items-center justify-content-center py-5"
         style={{
-          background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+          background:
+            "linear-gradient(135deg,rgb(45, 212, 171) 0%,rgb(60, 144, 240) 100%)",
           backgroundSize: "cover",
         }}
       >
@@ -69,7 +74,9 @@ const Login = () => {
                   style={{ width: "100px", height: "100px" }}
                 />
                 <h1 className="text-white mb-2 mt-3">Welcome Back!</h1>
-                <p className="text-white-50">We're excited to see you again</p>
+                <p className="text-dark fw-bold">
+                  We're excited to see you again
+                </p>
               </div>
 
               <div
@@ -98,6 +105,7 @@ const Login = () => {
                           value={email}
                           onChange={(e) => setEmail(e.target.value)}
                           required
+                          disabled={loading} // Disable input during loading
                           style={{ fontSize: "1rem" }}
                         />
                       </div>
@@ -116,6 +124,7 @@ const Login = () => {
                           onClick={() => navigate("/forgot-password")}
                           className="btn btn-link p-0 text-decoration-none"
                           style={{ fontSize: "0.875rem" }}
+                          disabled={loading} // Disable button during loading
                         >
                           Forgot password?
                         </button>
@@ -132,6 +141,7 @@ const Login = () => {
                           value={password}
                           onChange={(e) => setPassword(e.target.value)}
                           required
+                          disabled={loading} // Disable input during loading
                           style={{ fontSize: "1rem" }}
                         />
                       </div>
@@ -146,10 +156,17 @@ const Login = () => {
                         border: "none",
                         height: "54px",
                       }}
+                      disabled={loading} // Disable button during loading
                     >
                       <span className="d-flex align-items-center justify-content-center">
-                        Sign in
-                        <ArrowRight className="ms-2" size={20} />
+                        {loading ? (
+                          <Loader className="spinner-grow" size={20} />
+                        ) : (
+                          <>
+                            Sign in
+                            <ArrowRight className="ms-2" size={20} />
+                          </>
+                        )}
                       </span>
                     </button>
 

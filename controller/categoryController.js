@@ -29,3 +29,89 @@ export const createCategoryController = async (req, res) => {
     });
   }
 };
+
+export const updateCategoryController = async (req, res) => {
+  try {
+    const { name } = req.body;
+
+    const { id } = req.params;
+    const category = await categoryModel.findByIdAndUpdate(
+      id,
+      { name, slug: slugify(name) },
+      { new: true }
+    );
+    res.status(200).json({
+      success: true,
+      category,
+      message: "Category updated successfully",
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      success: false,
+      error,
+      message: "Error in category",
+    });
+  }
+};
+
+export const categoriesController = async (req, res) => {
+  try {
+    const categories = await categoryModel.find();
+    return res.status(200).send({ success: true, categories });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      success: false,
+      error,
+      message: "Error while getting cateogries",
+    });
+  }
+};
+
+export const signlecategoriesController = async (req, res) => {
+  try {
+    const { slug } = req.params;
+    // Correctly query the slug field
+    const category = await categoryModel.findOne({ slug });
+
+    // Handle case where no category is found
+    if (!category) {
+      return res.status(404).send({
+        success: false,
+        message: "Category not found",
+      });
+    }
+
+    res.status(200).send({
+      success: true,
+      category,
+      message: "Single category fetched successfully",
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({
+      success: false,
+      error,
+      message: "Error while getting single category",
+    });
+  }
+};
+
+export const deleteCategoryContriller = async (req, res) => {
+  try {
+    const { id } = req.params;
+    await categoryModel.findByIdAndDelete(id);
+    res.status(200).send({
+      message: "Category deleted successfully",
+      success: true,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      success: false,
+      error,
+      message: "Error while deleteing category",
+    });
+  }
+};

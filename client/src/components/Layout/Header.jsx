@@ -114,7 +114,7 @@ const Header = () => {
                         }}
                         className={({ isActive }) =>
                           `dropdown-item text-black${isActive ? "" : ""}`
-                        }
+                      }
                         to="/login"
                       >
                         Logout

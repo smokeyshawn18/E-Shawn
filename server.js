@@ -16,8 +16,8 @@ dotenv.config();
 connectDB();
 
 app.use(express.json());
-// rest apis
 app.use(cors());
+// rest apis
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/category", categoryRoutes);
 app.use("/api/v1/product", productRoutes);

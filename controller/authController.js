@@ -112,59 +112,80 @@ export const loginController = async (req, res) => {
   }
 };
 
-
 export const forgotPasswordController = async (req, res) => {
   try {
-    const { email, answer, new_password } = req.body;  // Corrected destructuring
+    const { email, answer, new_password } = req.body; // Corrected destructuring
     if (!email) {
       return res.status(400).send({
-        message: "Email is required"
+        message: "Email is required",
       });
     }
     if (!answer) {
       return res.status(400).send({
-        message: "Answer is required"
+        message: "Answer is required",
       });
     }
     if (!new_password) {
       return res.status(400).send({
-        message: "New Password is required"
+        message: "New Password is required",
       });
     }
 
     // Check if user exists
     const user = await userModel.findOne({
-      email, 
-      answer
+      email,
+      answer,
     });
     if (!user) {
       return res.status(404).send({
-        message: "User Not Found!"
+        message: "User Not Found!",
       });
     }
-    if(!answer){
+    if (!answer) {
       return res.status(404).send({
-        message: "Incorrect Security Answer"
-      })
+        message: "Incorrect Security Answer",
+      });
     }
 
     // Update password
     const hashed = await hashPassword(new_password);
     await userModel.findByIdAndUpdate(user._id, {
-      password: hashed
+      password: hashed,
     });
 
     res.status(200).send({
-      message: "Password updated successfully"
+      message: "Password updated successfully",
     });
   } catch (error) {
     res.status(500).send({
       message: "Error in forgot password",
-      error
+      error,
     });
   }
 };
 
+export const gettokenController = async (req, res) => {
+  const userId = req.user?.id; // Assuming the user is authenticated and you have their user ID
+
+  if (!userId) {
+    return res.status(400).json({ message: "User is not authenticated" });
+  }
+
+  // Retrieve the token from the database (use your actual DB query here)
+  User.findById(userId)
+    .then((user) => {
+      if (user && user.token) {
+        res.json({ user: user, token: user.token });
+      } else {
+        res.status(404).json({ message: "Token not found" });
+      }
+    })
+    .catch((err) => {
+      res
+        .status(500)
+        .json({ message: "Error fetching user token", error: err });
+    });
+};
 
 // test controller
 export const testController = async (req, res) => {

@@ -16,20 +16,30 @@ const CreateCategory = () => {
 
   const API = import.meta.env.VITE_API || "http://localhost:8000";
 
-  // Get auth token from localStorage
+  // Get auth token dynamically from server
   const getAuthToken = () => {
-    return localStorage.getItem("auth")
-      ? JSON.parse(localStorage.getItem("auth"))?.token
-      : null;
+    const token = localStorage.getItem("auth");
+    console.log("Retrieved token:", token); // Log the token to check
+    return token ? JSON.parse(token)?.token : null; // Ensure this is the correct path to the token
   };
 
-  // Configure axios with authentication header
+  // Axios instance with token interceptor
   const axiosInstance = axios.create({
     baseURL: API,
-    headers: {
-      Authorization: getAuthToken(),
-    },
   });
+
+  axiosInstance.interceptors.request.use(
+    async (config) => {
+      const token = await getAuthToken();
+      if (token) {
+        config.headers["Authorization"] = `Bearer ${token}`;
+      }
+      return config;
+    },
+    (error) => {
+      return Promise.reject(error);
+    }
+  );
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -50,15 +60,7 @@ const CreateCategory = () => {
       }
     } catch (error) {
       console.error("Error creating category:", error);
-      if (error.response?.data?.message === "Token is missing") {
-        toast.error("Please login to continue");
-        // Optionally redirect to login page
-        // navigate("/login");
-      } else {
-        toast.error(
-          error.response?.data?.message || "Error creating category!"
-        );
-      }
+      toast.error(error.response?.data?.message || "Error creating category!");
     } finally {
       setLoading(false);
     }
@@ -77,19 +79,14 @@ const CreateCategory = () => {
       }
     } catch (error) {
       console.error("Error fetching categories:", error);
-      if (error.response?.data?.message === "Token is missing") {
-        toast.error("Please login to continue");
-        // Optionally redirect to login page
-        // navigate("/login");
-      } else {
-        toast.error("Something went wrong while getting categories");
-      }
+      toast.error("Something went wrong while getting categories");
     }
   };
 
   useEffect(() => {
     getallcategory();
   }, []);
+
   const handleUpdatedSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -113,15 +110,14 @@ const CreateCategory = () => {
       );
     }
   };
+
   const handleDelete = async (pID) => {
     try {
       const { data } = await axiosInstance.delete(
-        `/api/v1/category/delete-category/${pID}`,
-        { name: updatedName } // Send name in the request body
+        `/api/v1/category/delete-category/${pID}`
       );
       if (data.success) {
         toast.success(data.message);
-
         getallcategory();
       } else {
         toast.error(data.message);
@@ -129,7 +125,7 @@ const CreateCategory = () => {
     } catch (error) {
       console.log(error);
       toast.error(
-        error.response?.data?.message || "Error while updating category"
+        error.response?.data?.message || "Error while deleting category"
       );
     }
   };
@@ -179,7 +175,7 @@ const CreateCategory = () => {
                             <tr key={category._id}>
                               <td>{index + 1}</td>
                               <td>{category.name}</td>
-                              <td className="">
+                              <td className="text-center">
                                 <button
                                   className="btn btn-primary btn-sm ms-3"
                                   onClick={() => {
@@ -215,7 +211,7 @@ const CreateCategory = () => {
               </div>
             </div>
             <Modal
-              onCancel={(c) => {
+              onCancel={() => {
                 setVisible(false);
               }}
               footer={null}

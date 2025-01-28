@@ -19,6 +19,8 @@ import Users from "./pages/Admin/Users";
 import Profile from "./pages/user/Profile";
 import Orders from "./pages/user/Orders";
 import ScrollToTop from "./components/Layout/Scroll";
+import Products from "./pages/Admin/Products";
+import UpdateProduct from "./pages/Admin/UpdateProduct";
 
 function App() {
   return (
@@ -85,6 +87,23 @@ function App() {
             </AdminRoute>
           }
         />
+        <Route
+          path="/dashboard/admin/products"
+          element={
+            <AdminRoute>
+              <Products />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path="/dashboard/admin/product/:slug"
+          element={
+            <AdminRoute>
+              <UpdateProduct />
+            </AdminRoute>
+          }
+        />
+
         <Route
           path="/dashboard/admin/users"
           element={

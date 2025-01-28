@@ -19,7 +19,7 @@ const CreateCategory = () => {
   // Get auth token dynamically from server
   const getAuthToken = () => {
     const token = localStorage.getItem("auth");
-    console.log("Retrieved token:", token); // Log the token to check
+
     return token ? JSON.parse(token)?.token : null; // Ensure this is the correct path to the token
   };
 

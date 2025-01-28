@@ -18,9 +18,8 @@ connectDB();
 app.use(express.json());
 app.use(
   cors({
-    origin: ["http://localhost:5173", "https://e-shawn.vercel.app/"], // Add your frontend domains
+    origin: ["http://localhost:5173", "https://e-shawn.vercel.app"], // Add your frontend domains
     methods: ["GET", "POST", "PUT", "DELETE"],
-    credentials: true,
   })
 );
 

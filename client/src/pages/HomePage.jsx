@@ -38,7 +38,9 @@ const HomePage = () => {
   //get product
   const getAllProducts = async () => {
     try {
-      const { data } = await axiosInstance.get("/api/v1/product/get-product");
+      const { data } = await axiosInstance.get(
+        `${API}/api/v1/product/get-product`
+      );
 
       setProducts(data.product || []);
     } catch (error) {
@@ -53,7 +55,7 @@ const HomePage = () => {
   const getallcategory = async () => {
     try {
       const { data } = await axiosInstance.get(
-        "/api/v1/category/get-categories"
+        `${API}/api/v1/category/get-categories`
       );
 
       if (data?.success) {

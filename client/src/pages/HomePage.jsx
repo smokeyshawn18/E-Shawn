@@ -76,58 +76,65 @@ const HomePage = () => {
 
   return (
     <Layout title="All Products - With Best Price!">
-      <div className="row">
-        <div className="col-md-3">
-          <h4 className="text-center">Filter By Category</h4>
-          <div className="d-flex flex-column">
-            {categories?.map((c) => (
-              <Checkbox key={c._id} onChange={(e) => console.log(e)}>
-                {c.name}
-              </Checkbox>
-            ))}
+      <div className="container-fluid">
+        <div className="row">
+          {/* Filter Section */}
+          <div className="col-md-3">
+            <h4 className="text-center mt-3">Filter By Category</h4>
+            <div className="d-flex flex-column">
+              {categories?.map((c) => (
+                <Checkbox key={c._id} onChange={(e) => console.log(e)}>
+                  {c.name}
+                </Checkbox>
+              ))}
+            </div>
           </div>
-        </div>
-        <div className="col-md-9">
-          <h1 className="text-center">All Products</h1>
-          <div className="row d-flex flex-wrap">
-            {products && products.length > 0 ? (
-              products.map((p) => (
-                <div
-                  key={p._id}
-                  className="col-12 col-sm-6 col-md-4 col-lg-3 mb-4"
-                >
-                  <div className="card h-100 shadow-sm">
-                    <img
-                      className="card-img-top img-fluid"
-                      src={`${API}/api/v1/product/product-photo/${p._id}`}
-                      alt={p.name}
-                      style={{
-                        height: "200px",
-                        objectFit: "cover",
-                      }}
-                    />
-                    <div className="card-body">
-                      <h5 className="card-title text-truncate">
-                        {p.name || "No Name"}
-                      </h5>
-                      <p className="card-text text-muted text-truncate">
-                        {p.description || "No Description"}
-                      </p>
-                      <h5 className="card-title text-truncate">
-                        Rs.{p.price || "No Price"}
-                      </h5>
 
-                      <button className="btn btn-primary ">More Details</button>
-                      <button className="btn btn-success mt-2">
-                        Add To Cart
-                      </button>
+          {/* Products Section */}
+          <div className="col-md-9">
+            <h1 className="text-center mt-3">All Products</h1>
+            <div className="row d-flex flex-wrap">
+              {products && products.length > 0 ? (
+                products.map((p) => (
+                  <div
+                    key={p._id}
+                    className="col-12 col-sm-6 col-md-4 col-lg-3 mb-4"
+                  >
+                    <div className="card h-100 shadow-sm">
+                      <img
+                        className="card-img-top img-fluid"
+                        src={`${API}/api/v1/product/product-photo/${p._id}`}
+                        alt={p.name}
+                        style={{
+                          height: "200px",
+                          objectFit: "cover",
+                        }}
+                      />
+                      <div className="card-body">
+                        <h5 className="card-title text-truncate">
+                          {p.name || "No Name"}
+                        </h5>
+                        <p className="card-text text-muted text-truncate">
+                          {p.description || "No Description"}
+                        </p>
+                        <h5 className="card-title text-truncate">
+                          Rs.{p.price || "No Price"}
+                        </h5>
+
+                        <button className="btn btn-primary btn-block mb-2 w-100">
+                          More Details
+                        </button>
+                        <button className="btn btn-success btn-block mt-2 w-100">
+                          Add To Cart
+                        </button>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))
-            ) : (
-              <p>No products found.</p>
-            )}
+                ))
+              ) : (
+                <p>No products found.</p>
+              )}
+            </div>
           </div>
         </div>
       </div>

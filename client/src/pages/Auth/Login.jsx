@@ -18,7 +18,7 @@ const Login = () => {
     e.preventDefault();
     setLoading(true); // Set loading to true when submission starts
     try {
-      const API = import.meta.env.VITE_API || "http://localhost:8000";
+      const API = import.meta.env.VITE_API;
       const payload = { email, password };
       const res = await axios.post(`${API}/api/v1/auth/login`, payload);
 

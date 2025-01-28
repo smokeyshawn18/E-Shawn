@@ -3,6 +3,7 @@ import Layout from "../components/Layout/Layout";
 import { useAuth } from "../context/Auth";
 import axios from "axios";
 import { Checkbox } from "antd";
+import { toast } from "react-hot-toast";
 
 const HomePage = () => {
   const [auth] = useAuth();

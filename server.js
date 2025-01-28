@@ -16,7 +16,14 @@ dotenv.config();
 connectDB();
 
 app.use(express.json());
-app.use(cors());
+app.use(
+  cors({
+    origin: ["http://localhost:5173", "https://e-shawn.vercel.app/"], // Add your frontend domains
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true,
+  })
+);
+
 // rest apis
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/category", categoryRoutes);

@@ -175,9 +175,9 @@ export const productFilterController = async (req, res) => {
     const { checked, radio } = req.body;
     let args = {};
 
-    // Filter by categories using $in
+    // Filter by categories
     if (checked.length > 0) {
-      args.category = { $in: checked }; // Corrected: Use `$in` for multiple categories
+      args.category = { $in: checked };
     }
 
     // Filter by price range
@@ -185,8 +185,8 @@ export const productFilterController = async (req, res) => {
       args.price = { $gte: radio[0], $lte: radio[1] };
     }
 
-    // Fetch products based on filters
-    const products = await productModel.find(args);
+    // Fetch products with populated category
+    const products = await productModel.find(args).populate("category", "name"); // ✅ Ensure category name is populated
 
     res.status(200).send({
       success: true,

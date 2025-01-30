@@ -13,7 +13,7 @@ const HomePage = () => {
   const [checked, setChecked] = useState([]);
   const [radio, setRadio] = useState([]);
 
-  const API = import.meta.env.VITE_API || "http://localhost:8000";
+  const API = "http://localhost:8000" || import.meta.env.VITE_API;
 
   // Get auth token dynamically from server
   const getAuthToken = () => {
@@ -104,6 +104,7 @@ const HomePage = () => {
           radio,
         }
       );
+
       setProducts(data?.products);
     } catch (error) {
       console.log(error);
@@ -171,6 +172,7 @@ const HomePage = () => {
                         <h5 className="card-title text-truncate">
                           {p.name || "No Name"}
                         </h5>
+                        <p>Category: {p.category?.name || "Uncategorized"}</p>
                         <p className="card-text text-muted text-truncate">
                           {p.description || "No Description"}
                         </p>

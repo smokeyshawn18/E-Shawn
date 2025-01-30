@@ -13,7 +13,7 @@ const HomePage = () => {
   const [checked, setChecked] = useState([]);
   const [radio, setRadio] = useState([]);
 
-  const API = "http://localhost:8000" || import.meta.env.VITE_API;
+  const API = import.meta.env.VITE_API || "http://localhost:8000";
 
   // Get auth token dynamically from server
   const getAuthToken = () => {

@@ -169,3 +169,36 @@ export const updateProductController = async (req, res) => {
     });
   }
 };
+
+export const productFilterController = async (req, res) => {
+  try {
+    const { checked, radio } = req.body;
+    let args = {};
+
+    // Filter by categories using $in
+    if (checked.length > 0) {
+      args.category = { $in: checked }; // Corrected: Use `$in` for multiple categories
+    }
+
+    // Filter by price range
+    if (radio.length === 2) {
+      args.price = { $gte: radio[0], $lte: radio[1] };
+    }
+
+    // Fetch products based on filters
+    const products = await productModel.find(args);
+
+    res.status(200).send({
+      success: true,
+      message: "Filtered products fetched successfully",
+      products,
+    });
+  } catch (error) {
+    console.log("Error filtering products:", error);
+    res.status(400).send({
+      success: false,
+      message: "Error while filtering products",
+      error,
+    });
+  }
+};

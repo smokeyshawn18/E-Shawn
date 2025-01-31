@@ -8,37 +8,46 @@ export const createProductController = async (req, res) => {
       req.fields;
     const { photo } = req.files;
 
-    switch (true) {
-      case !name:
-        return res.status(500).send({ error: "Name is required" });
-      case !description:
-        return res.status(500).send({ error: "Description is required" });
-      case !price:
-        return res.status(500).send({ error: "Price is required" });
-      case !category:
-        return res.status(500).send({ error: "Category is required" });
-      case !quantity:
-        return res.status(500).send({ error: "Quantity is required" });
-      case !shipping:
-        return res.status(500).send({ error: "Shipping is required" });
-      case photo && photo.size > 1000000:
-        return res.status(500).send({ error: "Image should be less than 1MB" });
+    // Validation checks for required fields
+    if (!name) return res.status(400).send({ error: "Name is required" });
+    if (!description)
+      return res.status(400).send({ error: "Description is required" });
+    if (!price) return res.status(400).send({ error: "Price is required" });
+    if (!category)
+      return res.status(400).send({ error: "Category is required" });
+    if (!quantity)
+      return res.status(400).send({ error: "Quantity is required" });
+    if (!shipping)
+      return res.status(400).send({ error: "Shipping is required" });
+
+    // File size validation
+    if (photo && photo.size > 1000000) {
+      return res.status(400).send({ error: "Image should be less than 1MB" });
     }
+
+    // Create product
     const product = new productModel({ ...req.fields, slug: slugify(name) });
+
+    // If a photo is uploaded, attach it
     if (photo) {
       product.photo.data = fs.readFileSync(photo.path);
       product.photo.contentType = photo.type;
     }
+
+    // Save product to the database
     await product.save();
-    res
-      .status(201)
-      .send({ success: true, product, message: "Product created" });
+
+    res.status(201).send({
+      success: true,
+      product,
+      message: "Product created successfully",
+    });
   } catch (error) {
     console.log(error);
     res.status(500).send({
       success: false,
       message: "Error in creating product",
-      error,
+      error: error.message || error,
     });
   }
 };

@@ -5,8 +5,10 @@ import axios from "axios";
 import { Checkbox, Radio } from "antd";
 import { toast } from "react-hot-toast";
 import { Prices } from "../components/Prices";
+import { useNavigate } from "react-router-dom";
 
 const HomePage = () => {
+  const navigate = useNavigate();
   const [auth] = useAuth();
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -116,40 +118,44 @@ const HomePage = () => {
       <div className="container-fluid">
         <div className="row">
           {/* Filter Section */}
-          <div className="col-md-3">
-            <h4 className="text-center mt-3">Filter By Category</h4>
-            <div className="d-flex flex-column">
-              {categories?.map((c) => (
-                <Checkbox
-                  key={c._id}
-                  onChange={(e) => handleFilter(e.target.checked, c._id)}
-                >
-                  {c.name}
-                </Checkbox>
-              ))}
-            </div>
-          </div>
+          <div className="col-md-3 mb-4">
+            <div className="filter-section p-3 border rounded shadow-sm">
+              <h4 className="text-center mt-3">Filter By Category</h4>
+              <div className="d-flex flex-column">
+                {categories?.map((c) => (
+                  <Checkbox
+                    key={c._id}
+                    onChange={(e) => handleFilter(e.target.checked, c._id)}
+                  >
+                    {c.name}
+                  </Checkbox>
+                ))}
+              </div>
 
-          <div className="col-md-3">
-            <h4 className="text-center mt-3">Filter By Price</h4>
-            <div className="d-flex flex-column">
+              <h4 className="text-center mt-3">Filter By Price</h4>
               <Radio.Group
                 onChange={(e) => {
                   setRadio(e.target.value);
                 }}
               >
                 {Prices?.map((p) => (
-                  <div className="" key={p._id}>
+                  <div key={p._id}>
                     <Radio value={p.array}>{p.name}</Radio>
                   </div>
                 ))}
               </Radio.Group>
+
+              <button
+                className="btn btn-danger mt-3 w-100"
+                onClick={() => window.location.reload()} // Use navigate to reload homepage
+              >
+                Reset Filter
+              </button>
             </div>
           </div>
 
           {/* Products Section */}
           <div className="col-md-9">
-            {JSON.stringify(radio, null, 4)}
             <h1 className="text-center mt-3">All Products</h1>
             <div className="row d-flex flex-wrap">
               {products && products.length > 0 ? (
@@ -158,7 +164,7 @@ const HomePage = () => {
                     key={p._id}
                     className="col-12 col-sm-6 col-md-4 col-lg-3 mb-4"
                   >
-                    <div className="card h-100 shadow-sm">
+                    <div className="card h-100 shadow-sm border-light">
                       <img
                         className="card-img-top img-fluid"
                         src={`${API}/api/v1/product/product-photo/${p._id}`}

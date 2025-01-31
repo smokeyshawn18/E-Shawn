@@ -16,10 +16,13 @@ dotenv.config();
 connectDB();
 
 app.use(express.json());
+
 app.use(
   cors({
-    origin: ["http://localhost:5173", "https://e-shawn.vercel.app"], // Add your frontend domains
+    origin: ["http://localhost:5173", "https://e-shawn.vercel.app"], // Allow frontend domains
     methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true, // If using cookies or authentication
   })
 );
 

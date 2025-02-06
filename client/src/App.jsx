@@ -21,6 +21,8 @@ import Orders from "./pages/user/Orders";
 import ScrollToTop from "./components/Layout/Scroll";
 import Products from "./pages/Admin/Products";
 import UpdateProduct from "./pages/Admin/UpdateProduct";
+import Searched from "./pages/Searched";
+import ProductDetail from "./pages/ProductDetail";
 
 function App() {
   return (
@@ -30,10 +32,12 @@ function App() {
         {/* Public Routes */}
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
+        <Route path="/product/:slug" element={<ProductDetail />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/policy" element={<Policy />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/search" element={<Searched />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
 
         {/* User Dashboard - Private Route */}

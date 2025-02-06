@@ -4,24 +4,30 @@ import Logo from "../../assets/Logo.png";
 import { useAuth } from "../../context/Auth.jsx";
 import toast from "react-hot-toast";
 import { User } from "lucide-react"; // Import the User icon
+import SearchInput from "../forms/SearchInput.jsx";
 
 const Header = () => {
   const [auth, setAuth] = useAuth();
   const cartItemCount = 0; // Replace with dynamic cart count
 
   return (
-    <nav className="navbar navbar-expand-lg navbar-light bg-white position-sticky top-0 start-0 end-0 z-3 shadow-sm">
-      <div className="container-fluid mx-auto">
+    <nav className="navbar navbar-expand-lg navbar-light bg-white position-sticky top-0 start-0 end-0 z-3 shadow-lg">
+      <div className="container-fluid mx-auto m-2">
+        {/* Logo and Brand Name */}
         <Link to="/" className="navbar-brand d-flex align-items-center">
           <img
             src={Logo}
             alt="E-Shawn"
-            className="img-fluid rounded"
+            className="img-fluid rounded-circle"
             style={{ width: "50px", height: "50px" }}
           />
-          <span className="fs-4 ms-2 text-black">e-Shawn</span>
+          <span className="fs-4 ms-2 text-black fw-bold">e-Shawn</span>
         </Link>
 
+        {/* Search Input */}
+        <SearchInput />
+
+        {/* Toggler Button for Mobile */}
         <button
           className="navbar-toggler"
           type="button"
@@ -34,23 +40,27 @@ const Header = () => {
           <span className="navbar-toggler-icon"></span>
         </button>
 
+        {/* Navbar Links */}
         <div className="collapse navbar-collapse" id="navbarNav">
-          <ul className="navbar-nav ms-auto">
-            <li className="nav-item">
+          <ul className="navbar-nav ms-auto d-flex align-items-center">
+            {/* Home Link */}
+            <li className="nav-item mx-3">
               <NavLink to="/" className="nav-link text-black px-3 py-2">
                 Home
               </NavLink>
             </li>
-            <li className="nav-item">
+
+            {/* Category Link */}
+            <li className="nav-item mx-3">
               <NavLink to="/category" className="nav-link text-black px-3 py-2">
                 Category
               </NavLink>
             </li>
 
-            {/* Conditionally render Register and Login links */}
+            {/* Conditional Rendering for Register and Login Links */}
             {!auth.user ? (
               <>
-                <li className="nav-item">
+                <li className="nav-item mx-3">
                   <NavLink
                     to="/register"
                     className="nav-link text-black px-3 py-2"
@@ -58,7 +68,7 @@ const Header = () => {
                     Register
                   </NavLink>
                 </li>
-                <li className="nav-item">
+                <li className="nav-item mx-3">
                   <NavLink
                     to="/login"
                     className="nav-link text-black px-3 py-2"
@@ -69,12 +79,12 @@ const Header = () => {
               </>
             ) : (
               <>
-                {/* Dropdown for logged-in users */}
-                <li className="nav-item dropdown">
+                {/* User Dropdown Menu for Logged-in Users */}
+                <li className="nav-item dropdown mx-3">
                   <NavLink
                     className={({ isActive }) =>
                       `nav-link dropdown-toggle text-primary px-3 py-2${
-                        isActive ? "" : ""
+                        isActive ? " active" : ""
                       }`
                     }
                     to="#"
@@ -83,8 +93,7 @@ const Header = () => {
                     data-bs-toggle="dropdown"
                     aria-expanded="false"
                   >
-                    <User className="me-2" size={20} />{" "}
-                    {/* Add Lucide User icon */}
+                    <User className="me-2" size={20} /> {/* User Icon */}
                     {auth?.user?.name}
                   </NavLink>
                   <ul
@@ -94,7 +103,7 @@ const Header = () => {
                     <li>
                       <NavLink
                         className={({ isActive }) =>
-                          `dropdown-item text-black${isActive ? "" : ""}`
+                          `dropdown-item text-black${isActive ? " active" : ""}`
                         }
                         to={
                           auth?.user?.role === 1
@@ -113,8 +122,8 @@ const Header = () => {
                           toast.success("Logout Successfully");
                         }}
                         className={({ isActive }) =>
-                          `dropdown-item text-black${isActive ? "" : ""}`
-                      }
+                          `dropdown-item text-black${isActive ? " active" : ""}`
+                        }
                         to="/login"
                       >
                         Logout
@@ -125,8 +134,8 @@ const Header = () => {
               </>
             )}
 
-            {/* Cart */}
-            <li className="nav-item">
+            {/* Cart Link */}
+            <li className="nav-item mx-3">
               <NavLink
                 to="/cart"
                 className="nav-link text-black d-flex align-items-center px-3 py-2"

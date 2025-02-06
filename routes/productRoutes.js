@@ -3,9 +3,12 @@ import { isAdmin, requireSignIn } from "../middlewares/authMiddleware.js";
 import {
   createProductController,
   getproductController,
+  productCountController,
   productdeleteController,
   productFilterController,
+  productListController,
   productphotoController,
+  searchProductController,
   singleproductController,
   updateProductController,
 } from "../controller/productController.js";
@@ -26,6 +29,10 @@ router.get("/single-product/:slug", singleproductController);
 router.get("/product-photo/:pid", productphotoController);
 router.delete("/productdel/:pid", productdeleteController);
 router.post("/product-filters", productFilterController);
+router.get("/product-count", productCountController);
+router.get("/product-list/:page", productListController);
+
+router.get("/search/:keyword", searchProductController);
 
 router.put(
   "/update-product/:pid",

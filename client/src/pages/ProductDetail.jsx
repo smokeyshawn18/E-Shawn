@@ -72,9 +72,7 @@ const ProductDetail = () => {
           <div className="col-md-7 col-12 d-flex flex-column justify-content-center align-items-start px-4">
             <h1 className="display-4 mb-3 text-primary">{product.name}</h1>
             <p className="lead text-muted mb-3">{product.description}</p>
-            <h3 className="text-success mb-4">{`Price: $${product.price.toFixed(
-              2
-            )}`}</h3>
+            <h3 className="text-success mb-4">{`Price: $${product.price})}`}</h3>
             <button className="btn btn-lg btn-primary text-white px-4 py-2 rounded-3 shadow-sm">
               Add To Cart
             </button>

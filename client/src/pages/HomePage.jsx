@@ -19,7 +19,7 @@ const HomePage = () => {
   const [loading, setLoading] = useState(false);
   const [loadingCategories, setLoadingCategories] = useState(true); // State for category loading
 
-  const API = "http://localhost:8000" || import.meta.env.VITE_API;
+  const API = import.meta.env.VITE_API || "http://localhost:8000";
 
   const getAuthToken = () => {
     const token = localStorage.getItem("auth");

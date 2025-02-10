@@ -3,11 +3,13 @@ import { isAdmin, requireSignIn } from "../middlewares/authMiddleware.js";
 import {
   createProductController,
   getproductController,
+  productCategoryController,
   productCountController,
   productdeleteController,
   productFilterController,
   productListController,
   productphotoController,
+  relatedProductController,
   searchProductController,
   singleproductController,
   updateProductController,
@@ -31,8 +33,9 @@ router.delete("/productdel/:pid", productdeleteController);
 router.post("/product-filters", productFilterController);
 router.get("/product-count", productCountController);
 router.get("/product-list/:page", productListController);
-
 router.get("/search/:keyword", searchProductController);
+router.get("/related-product/:pid/:cid", relatedProductController);
+router.get("/product-category/:slug", productCategoryController);
 
 router.put(
   "/update-product/:pid",

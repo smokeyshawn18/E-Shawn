@@ -1,5 +1,6 @@
 import slugify from "slugify";
 import productModel from "../models/productModel.js";
+import categoryModel from "../models/categoryModel.js";
 import fs from "fs";
 
 export const createProductController = async (req, res) => {
@@ -283,6 +284,53 @@ export const searchProductController = async (req, res) => {
     res.status(400).send({
       success: false,
       message: "Error in searching products",
+      error,
+    });
+  }
+};
+
+export const relatedProductController = async (req, res) => {
+  try {
+    const { pid, cid } = req.params;
+    const products = await productModel
+      .find({
+        category: cid,
+        _id: { $ne: pid },
+      })
+      .select("-photo")
+      .limit(3)
+      .populate("category");
+    res.status(200).send({
+      success: true,
+      message: "Sucessfully get the related products",
+      products,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(400).send({
+      success: false,
+      message: "Error while getting similar products",
+      error,
+    });
+  }
+};
+
+export const productCategoryController = async (req, res) => {
+  try {
+    const category = await categoryModel.findOne({
+      slug: req.params.slug,
+    });
+    const products = await productModel.find({ category }).populate("category");
+    res.status(200).send({
+      success: true,
+      category,
+      products,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(400).send({
+      success: false,
+      message: "Error in product category controller fn",
       error,
     });
   }

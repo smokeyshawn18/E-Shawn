@@ -1,8 +1,10 @@
 import React from "react";
 import Layout from "./../components/Layout/Layout";
 import { useSearch } from "../context/Search";
+import { useNavigate } from "react-router-dom";
 
 const Searched = () => {
+  const navigate = useNavigate();
   const [values, setValues] = useSearch();
   const API = import.meta.env.VITE_API || "http://localhost:8000";
 
@@ -46,7 +48,10 @@ const Searched = () => {
                         Rs.{p.price || "No Price"}
                       </h5>
 
-                      <button className="btn btn-primary btn-block mb-2 w-100">
+                      <button
+                        className="btn btn-primary btn-block mb-2 w-100"
+                        onClick={() => navigate(`/product/${p.slug}`)}
+                      >
                         More Details
                       </button>
                       <button className="btn btn-success btn-block mt-2 w-100">

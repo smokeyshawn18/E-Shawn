@@ -10,7 +10,6 @@ import "react-toastify/dist/ReactToastify.css";
 import Dashboard from "./pages/user/Dashboard";
 import PrivateRoute from "./components/Routes/Private";
 import ForgotPassword from "./pages/Auth/ForgotPassword";
-
 import AdminRoute from "./components/Routes/AdminRoute";
 import AdminDashboard from "./pages/Admin/AdminDashboard";
 import CreateCategory from "./pages/Admin/CreateCategory";
@@ -23,6 +22,8 @@ import Products from "./pages/Admin/Products";
 import UpdateProduct from "./pages/Admin/UpdateProduct";
 import Searched from "./pages/Searched";
 import ProductDetail from "./pages/ProductDetail";
+import Categories from "./pages/Categories";
+import CategoryProduct from "./pages/CategoryProduct";
 
 function App() {
   return (
@@ -31,6 +32,8 @@ function App() {
       <Routes>
         {/* Public Routes */}
         <Route path="/" element={<Home />} />
+        <Route path="/categories" element={<Categories />} />
+        <Route path="/category/:slug" element={<CategoryProduct />} />
         <Route path="/about" element={<About />} />
         <Route path="/product/:slug" element={<ProductDetail />} />
         <Route path="/contact" element={<Contact />} />

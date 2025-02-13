@@ -19,7 +19,7 @@ app.use(express.json());
 
 app.use(
   cors({
-    origin: ["http://localhost:5173", "https://e-shawn.vercel.app"], // Allow frontend domains
+    origin: ["https://e-shawn.vercel.app", "http://localhost:5173"], // Allow both production & dev frontend
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true, // If using cookies or authentication

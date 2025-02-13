@@ -15,7 +15,7 @@ const UserMenu = () => {
           to="/dashboard/user/profile"
           className="list-group-item list-group-item-action d-flex align-items-center"
         >
-          <User className="me-2 text-primary" size={20} />
+          <User className="me-2 text-dark" size={20} />
           Profile
         </NavLink>
 
@@ -24,7 +24,7 @@ const UserMenu = () => {
           to="/dashboard/user/orders"
           className="list-group-item list-group-item-action d-flex align-items-center"
         >
-          <ShoppingCart className="me-2 text-primary" size={20} />
+          <ShoppingCart className="me-2 text-dark" size={20} />
           Orders
         </NavLink>
       </div>

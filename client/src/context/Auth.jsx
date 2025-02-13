@@ -6,23 +6,38 @@ const AuthContext = createContext();
 
 // Provider component
 export const AuthProvider = ({ children }) => {
-  // Initialize state with an empty user and token initially
-  const [auth, setAuth] = useState({ user: null, token: null });
+  // Initialize state with stored auth data or default values
+  const [auth, setAuth] = useState(() => {
+    const storedAuth = localStorage.getItem("auth");
+    return storedAuth ? JSON.parse(storedAuth) : { user: null, token: null };
+  });
+
   const [loading, setLoading] = useState(true); // Track loading state for initial data fetch
 
-  // Fetch the token from your API (or from your session, if you're storing it elsewhere)
+  // Fetch the token from API only if it's not already in localStorage
   useEffect(() => {
     const fetchAuthToken = async () => {
+      if (auth.token) {
+        setLoading(false);
+        return; // Skip API call if token already exists
+      }
+
       try {
         const response = await axios.get("/api/v1/auth/get-token"); // API endpoint to fetch token from DB
         if (response.data?.token) {
           setAuth({ user: response.data.user, token: response.data.token });
-        } else {
-          setAuth({ user: null, token: null });
+          localStorage.setItem(
+            "auth",
+            JSON.stringify({
+              user: response.data.user,
+              token: response.data.token,
+            })
+          );
         }
       } catch (error) {
         console.error("Error fetching auth data", error);
         setAuth({ user: null, token: null });
+        localStorage.removeItem("auth");
       } finally {
         setLoading(false);
       }
@@ -31,7 +46,7 @@ export const AuthProvider = ({ children }) => {
     fetchAuthToken();
   }, []);
 
-  // Store auth data in localStorage if the token and user are present
+  // Update localStorage whenever auth state changes
   useEffect(() => {
     if (auth.user && auth.token) {
       localStorage.setItem("auth", JSON.stringify(auth));

@@ -3,6 +3,7 @@ import Layout from "../components/Layout/Layout";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { useParams } from "react-router-dom";
+import { useCart } from "../context/Cart";
 
 const API = import.meta.env.VITE_API || "http://localhost:8000";
 
@@ -25,6 +26,7 @@ const ProductDetail = () => {
   const [product, setProduct] = useState({});
   const [relatedProducts, setRelatedProducts] = useState([]);
   const params = useParams();
+  const [cart, setCart] = useCart();
 
   useEffect(() => {
     if (params?.slug) getProduct();
@@ -83,14 +85,27 @@ const ProductDetail = () => {
           </div>
 
           {/* Product Info */}
-          <div className="col-md-7 col-12 d-flex flex-column justify-content-center align-items-start px-4">
+          <div
+            key={product._id}
+            className="col-md-7 col-12 d-flex flex-column justify-content-center align-items-start px-4"
+          >
             <h1 className="display-4 mb-3 text-primary">{product.name}</h1>
             <p className="lead text-muted mb-3">{product.description}</p>
             <h5 className="text-black mb-4">
               Category: {product?.category?.name}
             </h5>
-            <h3 className="text-success mb-4">{`Price: Rs. ${product.price}`}</h3>
-            <button className="btn btn-lg btn-primary text-white px-4 py-2 rounded-3 shadow-sm">
+            <h3 className="text-secondary mb-4">{`Price: Rs. ${product.price}`}</h3>
+            <button
+              className="btn btn-success btn-block mt-2 w-100"
+              onClick={() => {
+                setCart([...cart, product]);
+                localStorage.setItem(
+                  "cart",
+                  JSON.stringify([...cart, product])
+                );
+                toast.success("Item added to your Cart");
+              }}
+            >
               Add To Cart
             </button>
           </div>
@@ -133,12 +148,12 @@ const ProductDetail = () => {
                       <h5 className="text-black mb-4">
                         Category: {p.category?.name || "Unknown"}
                       </h5>
-                      <h5 className="fw-bold text-primary">
+                      <h5 className="fw-bold text-secondary">
                         Rs. {p.price || "No Price"}
                       </h5>
 
                       {/* Add to Cart Button */}
-                      <button className="btn btn-primary mt-3 w-100 fw-bold shadow-sm">
+                      <button className="btn btn-success mt-3 w-100 fw-bold shadow-sm">
                         Add To Cart
                       </button>
                     </div>

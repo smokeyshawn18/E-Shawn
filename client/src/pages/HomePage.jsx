@@ -6,8 +6,10 @@ import { Checkbox, Radio } from "antd";
 import { toast } from "react-hot-toast";
 import { Prices } from "../components/Prices";
 import { useNavigate } from "react-router-dom";
+import { useCart } from "../context/Cart";
 
 const HomePage = () => {
+  const [cart, setCart] = useCart();
   const [auth] = useAuth();
   const navigate = useNavigate();
   const [products, setProducts] = useState([]);
@@ -250,7 +252,17 @@ const HomePage = () => {
                         >
                           More Details
                         </button>
-                        <button className="btn btn-success btn-block mt-2 w-100">
+                        <button
+                          className="btn btn-success btn-block mt-2 w-100"
+                          onClick={() => {
+                            setCart([...cart, p]);
+                            localStorage.setItem(
+                              "cart",
+                              JSON.stringify([...cart, p])
+                            );
+                            toast.success("Item added to your Cart");
+                          }}
+                        >
                           Add To Cart
                         </button>
                       </div>

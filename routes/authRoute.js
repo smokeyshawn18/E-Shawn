@@ -5,6 +5,7 @@ import {
   loginController,
   registerController,
   testController,
+  updateProfileController,
 } from "../controller/authController.js";
 import { isAdmin, requireSignIn } from "../middlewares/authMiddleware.js";
 
@@ -27,5 +28,7 @@ router.get("/admin-auth", requireSignIn, isAdmin, (req, res) => {
 });
 
 router.get("/get-token", gettokenController);
+
+router.put("/profile", requireSignIn, updateProfileController);
 
 export default router;

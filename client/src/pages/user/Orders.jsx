@@ -12,17 +12,25 @@ const Orders = () => {
   const [orders, setOrders] = useState([]);
   const API = import.meta.env.VITE_API || "http://localhost:8000";
 
+  // Fetch orders from the API
   const getOrders = async () => {
     try {
       const token = auth?.token;
       if (!token) {
         console.error("Token not found");
+        toast.error("You are not authenticated. Please log in.");
         return;
       }
 
       const { data } = await axios.get(`${API}/api/v1/auth/order`, {
         headers: { Authorization: `Bearer ${token}` },
       });
+
+      if (!data || !Array.isArray(data)) {
+        console.error("Invalid data format received:", data);
+        toast.error("Failed to load orders. Please try again.");
+        return;
+      }
 
       setOrders(data);
     } catch (error) {
@@ -31,6 +39,7 @@ const Orders = () => {
     }
   };
 
+  // Fetch orders on component mount
   useEffect(() => {
     if (auth?.token) getOrders();
   }, [auth?.token]);
@@ -51,6 +60,7 @@ const Orders = () => {
                 All Orders
               </h3>
 
+              {/* Check if orders exist */}
               {orders.length === 0 ? (
                 <div className="alert alert-warning text-center">
                   No orders found
@@ -58,7 +68,7 @@ const Orders = () => {
               ) : (
                 orders.map((order, index) => (
                   <div
-                    key={order._id}
+                    key={order._id || index}
                     className="card border-0 shadow-sm p-3 mb-4"
                   >
                     {/* Order Info */}
@@ -75,7 +85,7 @@ const Orders = () => {
                       </span>
                     </div>
 
-                    {/* Order Details - Responsive for Mobile */}
+                    {/* Order Details - Responsive for Desktop */}
                     <div className="d-none d-md-block">
                       <table className="table table-bordered mt-3">
                         <thead className="table-dark">
@@ -91,17 +101,19 @@ const Orders = () => {
                           <tr>
                             <td>
                               <span className="badge bg-warning text-dark fs-6">
-                                {order?.status}
+                                {order?.status || "Pending"}
                               </span>
                             </td>
-                            <td>{order?.buyer?.name}</td>
-                            <td>{moment(order?.createdAt).fromNow()}</td>
+                            <td>{order?.buyer?.name || "N/A"}</td>
+                            <td>
+                              {moment(order?.createdAt).fromNow() || "N/A"}
+                            </td>
                             <td>
                               {order.products
-                                .map((product) => product.name)
-                                .join(", ")}
+                                ?.map((product) => product.name)
+                                .join(", ") || "No items"}
                             </td>
-                            <td>{order?.products?.length}</td>
+                            <td>{order?.products?.length || 0}</td>
                           </tr>
                         </tbody>
                       </table>
@@ -112,52 +124,81 @@ const Orders = () => {
                       <p className="fw-bold mb-2">
                         Status:
                         <span className="badge bg-warning text-dark fs-6 ms-2">
-                          {order?.status}
+                          {order?.status || "Pending"}
                         </span>
                       </p>
                       <p className="mb-2">
-                        <strong>Buyer:</strong> {order?.buyer?.name}
+                        <strong>Buyer:</strong> {order?.buyer?.name || "N/A"}
                       </p>
                       <p className="mb-2">
                         <strong>Date:</strong>{" "}
-                        {moment(order?.createdAt).fromNow()}
+                        {moment(order?.createdAt).fromNow() || "N/A"}
                       </p>
                       <p className="mb-2">
                         <strong>Items:</strong>{" "}
-                        {order.products.map((p) => p.name).join(", ")}
+                        {order.products?.map((p) => p.name).join(", ") ||
+                          "No items"}
                       </p>
                       <p className="mb-0">
-                        <strong>Quantity:</strong> {order?.products?.length}
+                        <strong>Quantity:</strong>{" "}
+                        {order?.products?.length || 0}
                       </p>
                     </div>
 
                     {/* Product Details */}
-                    <div className="row mt-3">
-                      {order?.products?.map((p) => (
-                        <div
-                          className="col-12 col-sm-6 col-md-4 mb-3"
-                          key={p._id}
-                        >
-                          <div className="card border-0 shadow-sm h-100">
-                            <img
-                              className="card-img-top"
-                              src={`${API}/api/v1/product/product-photo/${p._id}`}
-                              alt={p.name}
-                              style={{ height: "180px", objectFit: "cover" }}
-                            />
-                            <div className="card-body">
-                              <h6 className="card-title">{p.name}</h6>
-                              <p className="text-muted small">
-                                {p.description.substring(0, 50)}...
-                              </p>
-                              <p className="fw-bold text-success">
-                                Rs. {p.price}
-                              </p>
+                    {order?.products && order.products.length > 0 && (
+                      <div className="row mt-3">
+                        {order.products.map((product) => (
+                          <div
+                            className="col-12 col-sm-6 col-md-4 mb-3"
+                            key={product._id}
+                          >
+                            <div className="card border-0 shadow-sm h-100">
+                              {/* Product Image */}
+                              {product._id ? (
+                                <img
+                                  className="card-img-top"
+                                  src={`${API}/api/v1/product/product-photo/${product._id}`}
+                                  alt={product.name}
+                                  style={{
+                                    height: "180px",
+                                    objectFit: "cover",
+                                  }}
+                                />
+                              ) : (
+                                // Fallback for missing image
+                                <div
+                                  style={{
+                                    height: "180px",
+                                    backgroundColor: "#f8f9fa",
+                                    display: "flex",
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                  }}
+                                >
+                                  No Image Available
+                                </div>
+                              )}
+                              {/* Product Info */}
+                              <div className="card-body">
+                                <h6 className="card-title">{product.name}</h6>
+                                <p className="text-muted small">
+                                  {product.description
+                                    ? `${product.description.substring(
+                                        0,
+                                        50
+                                      )}...`
+                                    : "No description available"}
+                                </p>
+                                <p className="fw-bold text-success">
+                                  Rs. {product.price || 0}
+                                </p>
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      ))}
-                    </div>
+                        ))}
+                      </div>
+                    )}
                   </div>
                 ))
               )}

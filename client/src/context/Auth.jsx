@@ -12,7 +12,8 @@ export const AuthProvider = ({ children }) => {
     return storedAuth ? JSON.parse(storedAuth) : { user: null, token: null };
   });
 
-  const [loading, setLoading] = useState(true); // Track loading state for initial data fetch
+  const [loading, setLoading] = useState(true);
+  const API = import.meta.env.VITE_API; // Track loading state for initial data fetch
 
   // Fetch the token from API only if it's not already in localStorage
   useEffect(() => {
@@ -23,7 +24,7 @@ export const AuthProvider = ({ children }) => {
       }
 
       try {
-        const response = await axios.get("/api/v1/auth/get-token"); // API endpoint to fetch token from DB
+        const response = await axios.get(`${API}/api/v1/auth/get-token`); // API endpoint to fetch token from DB
         if (response.data?.token) {
           setAuth({ user: response.data.user, token: response.data.token });
           localStorage.setItem(

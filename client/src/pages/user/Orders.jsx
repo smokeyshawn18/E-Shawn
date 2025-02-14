@@ -10,7 +10,7 @@ const Orders = () => {
     () => JSON.parse(localStorage.getItem("auth")) || {}
   );
   const [orders, setOrders] = useState([]);
-  const API = "http://localhost:8000";
+  const API = import.meta.env.VITE_API || "http://localhost:8000";
 
   const getOrders = async () => {
     try {

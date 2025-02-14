@@ -25,6 +25,7 @@ import ProductDetail from "./pages/ProductDetail";
 import Categories from "./pages/Categories";
 import CategoryProduct from "./pages/CategoryProduct";
 import CartPage from "./pages/CartPage";
+import AdminOrders from "./pages/Admin/AdminOrders";
 
 function App() {
   return (
@@ -85,6 +86,14 @@ function App() {
           element={
             <AdminRoute>
               <CreateCategory />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path="/dashboard/admin/orders"
+          element={
+            <AdminRoute>
+              <AdminOrders />
             </AdminRoute>
           }
         />

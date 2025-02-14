@@ -7,6 +7,7 @@ import { toast } from "react-hot-toast";
 import { Prices } from "../components/Prices";
 import { useNavigate } from "react-router-dom";
 import { useCart } from "../context/Cart";
+import "../styles/homepage.css";
 
 const HomePage = () => {
   const [cart, setCart] = useCart();
@@ -243,7 +244,7 @@ const HomePage = () => {
                         </p>
 
                         <h5 className="card-title text-truncate">
-                          Rs.{p.price || "No Price"}
+                          $ {p.price || "No Price"}
                         </h5>
 
                         <button

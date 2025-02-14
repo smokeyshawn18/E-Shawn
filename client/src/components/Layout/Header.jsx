@@ -156,7 +156,7 @@ const Header = () => {
 
             {/* Cart */}
             <li className="nav-item mx-1">
-              <Badge count={cart?.length} showZero className="fs-5">
+              <Badge count={cart?.length} showZero className="fs-6 mt-2">
                 <NavLink
                   to="/cart"
                   className="nav-link  d-flex align-items-center text-dark px-3 py-2"

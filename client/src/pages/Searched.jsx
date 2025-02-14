@@ -45,7 +45,7 @@ const Searched = () => {
                       </p>
 
                       <h5 className="card-title text-truncate">
-                        Rs.{p.price || "No Price"}
+                        $ {p.price || "No Price"}
                       </h5>
 
                       <button

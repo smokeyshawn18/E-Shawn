@@ -7,6 +7,7 @@ import connectDB from "./config/db.js";
 import authRoutes from "./routes/authRoute.js";
 import categoryRoutes from "./routes/categoryRoutes.js";
 import productRoutes from "./routes/productRoutes.js";
+import path from "path";
 
 const app = express();
 
@@ -16,6 +17,8 @@ dotenv.config();
 connectDB();
 
 app.use(express.json());
+
+app.use(express.static(path.join(__dirname, "./client/build")));
 
 app.use(
   cors({
@@ -33,8 +36,8 @@ app.use("/api/v1/product", productRoutes);
 
 app.use(morgan("dev"));
 
-app.get("/", (req, res) => {
-  res.send("Hello World");
+app.use("*", function (req, res) {
+  res.sendFile(path.join(__dirname, "./client/build/index.html"));
 });
 
 const PORT = process.env.PORT || 8001;

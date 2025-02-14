@@ -94,9 +94,9 @@ const ProductDetail = () => {
             <h5 className="text-black mb-4">
               Category: {product?.category?.name}
             </h5>
-            <h3 className="text-secondary mb-4">{`Price: Rs. ${product.price}`}</h3>
+            <h3 className="text-success fw-bold mb-4">{`Price: $ ${product.price}`}</h3>
             <button
-              className="btn btn-success btn-block mt-2 w-100"
+              className="btn btn-primary btn-block mt-2 w-20"
               onClick={() => {
                 setCart([...cart, product]);
                 localStorage.setItem(
@@ -149,7 +149,7 @@ const ProductDetail = () => {
                         Category: {p.category?.name || "Unknown"}
                       </h5>
                       <h5 className="fw-bold text-secondary">
-                        Rs. {p.price || "No Price"}
+                        $ {p.price || "No Price"}
                       </h5>
 
                       {/* Add to Cart Button */}

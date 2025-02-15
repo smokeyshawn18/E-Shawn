@@ -6,6 +6,7 @@ import {
   FaTimesCircle,
   FaEdit,
   FaTrash,
+  FaPhone,
 } from "react-icons/fa";
 import AdminMenu from "../../components/Layout/AdminMenu";
 import Layout from "../../components/Layout/Layout";
@@ -72,6 +73,7 @@ const Users = () => {
                           <th>ID</th>
                           <th>Name</th>
                           <th>Email</th>
+                          <th>Phone</th>
                           <th>Role</th>
 
                           <th>Actions</th>
@@ -88,6 +90,10 @@ const Users = () => {
                             <td>
                               <FaEnvelope className="text-success me-2" />
                               {user.email}
+                            </td>
+                            <td>
+                              <FaPhone className="text-success me-2" />
+                              {user.phone}
                             </td>
                             <td>{user.role || "User"}</td>
 

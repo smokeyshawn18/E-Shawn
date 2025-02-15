@@ -15,10 +15,10 @@ import { useAuth } from "../../context/Auth";
 
 const Users = () => {
   const [users, setUsers] = useState([]);
-  const [auth, setAuth] = useState(
+  const [auth, setAuth] = useAuth(
     () => JSON.parse(localStorage.getItem("auth")) || {}
   );
-  const API = "http://localhost:8000";
+  const API = import.meta.env.VITE_API || "http://localhost:8000";
 
   const getAllUsers = async () => {
     try {

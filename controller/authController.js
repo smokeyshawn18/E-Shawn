@@ -263,6 +263,22 @@ export const allOrderController = async (req, res) => {
   }
 };
 
+// all user fn
+
+export const allUserController = async (req, res) => {
+  try {
+    const users = await userModel.find({}); // No need for .populate("users")
+    res.json(users);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      message: "Error getting all users",
+      error,
+    });
+  }
+};
+
 export const orderStatusController = async (req, res) => {
   try {
     const { orderId } = req.params;

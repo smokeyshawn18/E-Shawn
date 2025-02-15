@@ -1,6 +1,7 @@
 import express from "express";
 import {
   allOrderController,
+  allUserController,
   forgotPasswordController,
   gettokenController,
   loginController,
@@ -40,6 +41,8 @@ router.get("/order", requireSignIn, orderController);
 //get all orders
 
 router.get("/all-order", requireSignIn, isAdmin, allOrderController);
+
+router.get("/all-user", requireSignIn, isAdmin, allUserController);
 
 //  update order status
 

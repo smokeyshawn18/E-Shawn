@@ -172,14 +172,15 @@ const HomePage = () => {
 
   return (
     <Layout title="All Products - With Best Price!">
-      <aside className="container-fluid">
+      <div className="container-fluid px-lg-5 py-4">
         <div className="row">
-          <div className="col-md-3 mb-4">
-            <div className="filter-section p-3 border rounded shadow-sm">
-              <h4 className="text-center mt-3">Filter By Category</h4>
+          {/* Sidebar - Filters */}
+          <div className="col-lg-3 col-md-4 col-sm-12 mb-4">
+            <div className="filter-section p-3 border rounded shadow-sm bg-light">
+              <h4 className="text-center mb-3">Filter By Category</h4>
               <div className="d-flex flex-column">
                 {loadingCategories ? (
-                  <p>Loading categories...</p> // Show loading state for categories
+                  <p>Loading categories...</p>
                 ) : categories?.length > 0 ? (
                   categories.map((c) => (
                     <Checkbox
@@ -190,7 +191,7 @@ const HomePage = () => {
                     </Checkbox>
                   ))
                 ) : (
-                  <p>No categories available</p> // Show message if no categories
+                  <p>No categories available</p>
                 )}
               </div>
 
@@ -216,29 +217,34 @@ const HomePage = () => {
             </div>
           </div>
 
-          <div className="col-md-9">
-            <div className="d-flex align-items-center justify-content-center gap-1">
+          {/* Main Content */}
+          <div className="col-lg-9 col-md-8 col-sm-12">
+            {/* Header Section */}
+            <div className="d-flex flex-wrap align-items-center justify-content-center gap-3 text-center">
               <img
                 src={Logo}
                 alt="E-SHawn-Logo"
-                className="img-fluid"
+                className="img-fluid rounded shadow-sm"
                 style={{
-                  height: "300px",
+                  height: "250px",
                   objectFit: "cover",
                 }}
               />
-              <h2 className="fw-bold text-dark me-4">Welcome to E-Shawn</h2>
+              <h1 className="fw-bold text-success mb-5 fs-2">
+                Welcome to <span className="text-primary fw-bold">E-Shawn</span>
+              </h1>
             </div>
 
-            <h1 className="text-center mt-3">All Products</h1>
-            <div className="row d-flex flex-wrap">
+            {/* Products Section */}
+            <h1 className="text-center mt-4 mb-3 fw-bold">All Products</h1>
+            <div className="row">
               {products && products.length > 0 ? (
                 products.map((p) => (
                   <div
                     key={p._id}
                     className="col-12 col-sm-6 col-md-4 col-lg-3 mb-4"
                   >
-                    <div className="card h-100 shadow-sm border-light">
+                    <div className="card h-100 shadow-sm border-light rounded overflow-hidden">
                       <img
                         className="card-img-top img-fluid"
                         src={`${API}/api/v1/product/product-photo/${p._id}`}
@@ -248,27 +254,24 @@ const HomePage = () => {
                           objectFit: "cover",
                         }}
                       />
-                      <div className="card-body">
+                      <div className="card-body d-flex flex-column">
                         <h5 className="card-title text-truncate">
                           {p.name || "No Name"}
                         </h5>
-
                         <p className="card-text text-muted text-truncate">
                           {p.description || "No Description"}
                         </p>
-
-                        <h5 className="card-title text-truncate">
+                        <h5 className="card-title">
                           $ {p.price || "No Price"}
                         </h5>
-
                         <button
-                          className="btn btn-primary btn-block mb-2 w-100"
+                          className="btn btn-primary btn-block mb-2"
                           onClick={() => navigate(`/product/${p.slug}`)}
                         >
                           More Details
                         </button>
                         <button
-                          className="btn btn-success btn-block mt-2 w-100"
+                          className="btn btn-success btn-block mt-2"
                           onClick={() => {
                             setCart([...cart, p]);
                             localStorage.setItem(
@@ -285,29 +288,31 @@ const HomePage = () => {
                   </div>
                 ))
               ) : (
-                <p>No products found.</p>
+                <p className="text-center">No products found.</p>
               )}
             </div>
-            <div className="m-2 p-3">
+
+            {/* Load More Button */}
+            <div className="text-center mt-4">
               {products &&
                 products.length < total &&
                 !checked.length &&
                 !radio.length && (
                   <button
-                    className=" btn btn-primary"
+                    className="btn btn-primary px-4 py-2 fw-bold"
                     onClick={(e) => {
                       e.preventDefault();
                       setPage(page + 1);
                     }}
-                    disabled={checked.length || radio.length} // Disable if filters are applied
+                    disabled={checked.length || radio.length}
                   >
-                    {loading ? "Loading please Wait..." : "Loadmore"}
+                    {loading ? "Loading please wait..." : "Load More"}
                   </button>
                 )}
             </div>
           </div>
         </div>
-      </aside>
+      </div>
     </Layout>
   );
 };

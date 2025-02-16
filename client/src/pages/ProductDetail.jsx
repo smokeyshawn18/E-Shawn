@@ -148,12 +148,12 @@ const ProductDetail = () => {
                       <h5 className="text-black mb-4">
                         Category: {p.category?.name || "Unknown"}
                       </h5>
-                      <h5 className="fw-bold text-secondary">
+                      <h5 className="fw-bold text-success">
                         $ {p.price || "No Price"}
                       </h5>
 
                       {/* Add to Cart Button */}
-                      <button className="btn btn-success mt-3 w-100 fw-bold shadow-sm">
+                      <button className="btn btn-primary mt-3 w-100 fw-bold shadow-sm">
                         Add To Cart
                       </button>
                     </div>

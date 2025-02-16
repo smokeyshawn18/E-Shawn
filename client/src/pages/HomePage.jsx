@@ -8,6 +8,7 @@ import { Prices } from "../components/Prices";
 import { useNavigate } from "react-router-dom";
 import { useCart } from "../context/Cart";
 import "../styles/homepage.css";
+import Logo from "../assets/Logo.png";
 
 const HomePage = () => {
   const [cart, setCart] = useCart();
@@ -171,7 +172,7 @@ const HomePage = () => {
 
   return (
     <Layout title="All Products - With Best Price!">
-      <div className="container-fluid">
+      <aside className="container-fluid">
         <div className="row">
           <div className="col-md-3 mb-4">
             <div className="filter-section p-3 border rounded shadow-sm">
@@ -216,6 +217,19 @@ const HomePage = () => {
           </div>
 
           <div className="col-md-9">
+            <div className="d-flex align-items-center justify-content-center gap-1">
+              <img
+                src={Logo}
+                alt="E-SHawn-Logo"
+                className="img-fluid"
+                style={{
+                  height: "300px",
+                  objectFit: "cover",
+                }}
+              />
+              <h2 className="fw-bold text-dark me-4">Welcome to E-Shawn</h2>
+            </div>
+
             <h1 className="text-center mt-3">All Products</h1>
             <div className="row d-flex flex-wrap">
               {products && products.length > 0 ? (
@@ -293,7 +307,7 @@ const HomePage = () => {
             </div>
           </div>
         </div>
-      </div>
+      </aside>
     </Layout>
   );
 };

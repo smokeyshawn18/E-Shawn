@@ -191,7 +191,7 @@ const Orders = () => {
                                     : "No description available"}
                                 </p>
                                 <p className="fw-bold text-success">
-                                  $ {product.price || 0}
+                                  Price: $ {product.price || 0}
                                 </p>
                               </div>
                             </div>

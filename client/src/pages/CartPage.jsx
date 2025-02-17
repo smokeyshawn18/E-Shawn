@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import DropIn from "braintree-web-drop-in-react";
 import axios from "axios";
+import ScrollToTopButton from "../components/ScrollToTop";
 
 const CartPage = () => {
   //
@@ -237,6 +238,7 @@ const CartPage = () => {
             </div>
           </div>
         </div>
+        <ScrollToTopButton />
       </div>
     </Layout>
   );

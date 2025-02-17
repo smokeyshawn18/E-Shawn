@@ -4,6 +4,8 @@ import toast from "react-hot-toast";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { useCart } from "../context/Cart";
+import { CircleEllipsis, ShoppingCart } from "lucide-react";
+import ScrollToTopButton from "../components/ScrollToTop";
 
 const CategoryProduct = () => {
   const API = import.meta.env.VITE_API || "http://localhost:8000";
@@ -72,7 +74,7 @@ const CategoryProduct = () => {
                       className="btn btn-primary fw-semibold"
                       onClick={() => navigate(`/product/${p.slug}`)}
                     >
-                      More Details
+                      <CircleEllipsis className="me-1" /> More Details
                     </button>
                     <button
                       className="btn btn-success btn-block mt-2 w-100"
@@ -85,7 +87,7 @@ const CategoryProduct = () => {
                         toast.success("Item added to your Cart");
                       }}
                     >
-                      Add To Cart
+                      <ShoppingCart />
                     </button>
                   </div>
                 </div>
@@ -95,6 +97,7 @@ const CategoryProduct = () => {
             <p className="text-center text-danger">No products found.</p>
           )}
         </div>
+        <ScrollToTopButton />
       </div>
     </Layout>
   );

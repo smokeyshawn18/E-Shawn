@@ -38,6 +38,7 @@ const Products = () => {
 
   const getAllProducts = async () => {
     try {
+      setLoading(true); // Start loading before the request
       const { data } = await axiosInstance.get("/api/v1/product/get-product");
       setProducts(data.product); // Use data.product instead of data.products
       setLoading(false);
@@ -52,6 +53,10 @@ const Products = () => {
   useEffect(() => {
     getAllProducts();
   }, []);
+
+  const handleRefresh = () => {
+    getAllProducts();
+  };
 
   return (
     <Layout>
@@ -69,10 +74,28 @@ const Products = () => {
           {/* Main Content */}
           <div className="col-12 col-md-9">
             <div className="card shadow-sm border-0">
-              <div className="card-header bg-light">
+              <div className="card-header bg-light d-flex justify-content-between align-items-center">
                 <h5 className="mb-0 text-center text-md-start">
                   All Products Lists
                 </h5>
+                <button
+                  className="btn btn-sm btn-primary"
+                  onClick={handleRefresh}
+                  disabled={loading}
+                >
+                  {loading ? (
+                    <>
+                      <span
+                        className="spinner-border spinner-border-sm"
+                        role="status"
+                        aria-hidden="true"
+                      ></span>
+                      Loading...
+                    </>
+                  ) : (
+                    "Refresh"
+                  )}
+                </button>
               </div>
               <div className="card-body">
                 {loading ? (

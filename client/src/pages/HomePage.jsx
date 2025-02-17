@@ -9,6 +9,8 @@ import { useNavigate } from "react-router-dom";
 import { useCart } from "../context/Cart";
 import "../styles/homepage.css";
 import Logo from "../assets/Logo.png";
+import { ShoppingCart, CircleEllipsis } from "lucide-react";
+import ScrollToTopButton from "../components/ScrollToTop";
 
 const HomePage = () => {
   const [cart, setCart] = useCart();
@@ -25,6 +27,7 @@ const HomePage = () => {
 
   const API = import.meta.env.VITE_API || "http://localhost:8000";
 
+  //
   const getAuthToken = () => {
     const token = localStorage.getItem("auth");
     return token ? JSON.parse(token)?.token : null;
@@ -59,20 +62,9 @@ const HomePage = () => {
     } catch (error) {
       setLoading(false);
       console.error("Error fetching products:", error.message);
+      toast.error("Error fetching products");
     }
   };
-
-  useEffect(() => {
-    if (!checked.length || !radio.length) getAllProducts();
-  }, [checked.length, radio.length]);
-
-  useEffect(() => {
-    if (checked.length || radio.length) {
-      filterProduct();
-    } else {
-      getAllProducts();
-    }
-  }, [checked, radio]);
 
   const getallcategory = async () => {
     try {
@@ -93,20 +85,14 @@ const HomePage = () => {
     }
   };
 
-  useEffect(() => {
-    // Call to fetch categories and products
-    const fetchData = async () => {
-      try {
-        await getallcategory();
-        getTotal();
-      } catch (error) {
-        console.log(error);
-        toast.error("Error fetching categories or products");
-      }
-    };
-
-    fetchData();
-  }, []); // This ensures categories are fetched only once when the component first loads
+  const getTotal = async () => {
+    try {
+      const { data } = await axiosInstance.get("/api/v1/product/product-count");
+      setTotal(data?.total);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const handleFilter = (value, id) => {
     let all = [...checked];
@@ -118,17 +104,8 @@ const HomePage = () => {
     setChecked(all);
   };
 
-  const getTotal = async () => {
-    try {
-      const { data } = await axiosInstance.get("/api/v1/product/product-count");
-      setTotal(data?.total);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   useEffect(() => {
-    if (page == 1) return;
+    if (page === 1) return;
     loadMore();
   }, [page]);
 
@@ -136,18 +113,20 @@ const HomePage = () => {
     try {
       setLoading(true);
       const { data } = await axiosInstance.get(
-        `/api/v1/product/product-list/${page}`
+        `${API}/api/v1/product/product-list/${page}`
       );
       setLoading(false);
       setProducts([...products, ...data?.products]);
     } catch (error) {
       console.log(error);
       setLoading(false);
+      toast.error("Error loading more products");
     }
   };
 
   const filterProduct = async () => {
     try {
+      setLoading(true);
       const { data } = await axiosInstance.post(
         `${API}/api/v1/product/product-filters`,
         {
@@ -155,64 +134,93 @@ const HomePage = () => {
           radio,
         }
       );
-
-      // Attach category object to each product before setting state
-      const updatedProducts = data?.products.map((p) => ({
-        ...p,
-        category: categories.find((cat) => cat._id === p.category) || {
-          name: "No Category",
-        },
-      }));
-
-      setProducts(updatedProducts);
+      setLoading(false);
+      setProducts(data.products || []);
     } catch (error) {
+      setLoading(false);
       console.log(error);
+      toast.error("Error filtering products");
     }
   };
+
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        await getallcategory();
+        await getTotal();
+        await getAllProducts();
+      } catch (error) {
+        console.error("Error loading data:", error);
+        toast.error("Error loading data");
+      }
+    };
+
+    loadData();
+  }, []);
+
+  useEffect(() => {
+    if (checked.length > 0 || radio.length > 0) {
+      filterProduct();
+    } else {
+      getAllProducts();
+    }
+  }, [checked, radio]);
 
   return (
     <Layout title="All Products - With Best Price!">
       <div className="container-fluid px-lg-5 py-4">
         <div className="row">
-          {/* Sidebar - Filters */}
           <div className="col-lg-3 col-md-4 col-sm-12 mb-4">
-            <div className="filter-section p-3 border rounded shadow-sm bg-light">
-              <h4 className="text-center mb-3">Filter By Category</h4>
+            <div className="filter-section p-4 border rounded shadow-lg bg-white">
+              {/* Category Filter */}
+              <h4 className="text-center mb-3 fw-bold">Filter by Category</h4>
               <div className="d-flex flex-column">
                 {loadingCategories ? (
-                  <p>Loading categories...</p>
+                  <p className="text-center text-muted">
+                    Loading categories...
+                  </p>
                 ) : categories?.length > 0 ? (
                   categories.map((c) => (
-                    <Checkbox
-                      key={c._id}
-                      onChange={(e) => handleFilter(e.target.checked, c._id)}
-                    >
-                      {c.name}
-                    </Checkbox>
+                    <div key={c._id} className="d-flex align-items-center">
+                      <Checkbox
+                        className="filter-checkbox w-100 fs-6 text-primary fw-bold"
+                        onChange={(e) => handleFilter(e.target.checked, c._id)}
+                      >
+                        {c.name}
+                      </Checkbox>
+                    </div>
                   ))
                 ) : (
-                  <p>No categories available</p>
+                  <p className="text-center text-muted">
+                    No categories available
+                  </p>
                 )}
               </div>
 
-              <h4 className="text-center mt-3">Filter By Price</h4>
+              {/* Price Filter */}
+              <h4 className="text-center mt-4 fw-bold">Filter by Price</h4>
               <Radio.Group
-                onChange={(e) => {
-                  setRadio(e.target.value);
-                }}
+                className="w-100 d-flex flex-column"
+                onChange={(e) => setRadio(e.target.value)}
               >
                 {Prices?.map((p) => (
-                  <div key={p._id}>
-                    <Radio value={p.array}>{p.name}</Radio>
+                  <div key={p._id} className="mb-2 fw-bold ">
+                    <Radio
+                      className="text-success fw-bold fs-6"
+                      value={p.array}
+                    >
+                      {p.name}
+                    </Radio>
                   </div>
                 ))}
               </Radio.Group>
 
+              {/* Reset Button */}
               <button
-                className="btn btn-danger mt-3 w-100"
+                className="btn btn-danger mt-4 w-100 fw-bold"
                 onClick={() => window.location.reload()}
               >
-                Reset Filter
+                Reset Filters
               </button>
             </div>
           </div>
@@ -234,7 +242,6 @@ const HomePage = () => {
                 Welcome to <span className="text-primary fw-bold">E-Shawn</span>
               </h1>
             </div>
-
             {/* Products Section */}
             <h1 className="text-center mt-4 mb-3 fw-bold">All Products</h1>
             <div className="row">
@@ -265,13 +272,13 @@ const HomePage = () => {
                           $ {p.price || "No Price"}
                         </h5>
                         <button
-                          className="btn btn-primary btn-block mb-2"
+                          className="btn btn-primary btn-block mb-2 fw-bold"
                           onClick={() => navigate(`/product/${p.slug}`)}
                         >
-                          More Details
+                          <CircleEllipsis className="me-1" /> More Details
                         </button>
                         <button
-                          className="btn btn-success btn-block mt-2"
+                          className="btn btn-success fs-6 mt-2"
                           onClick={() => {
                             setCart([...cart, p]);
                             localStorage.setItem(
@@ -281,7 +288,7 @@ const HomePage = () => {
                             toast.success("Item added to your Cart");
                           }}
                         >
-                          Add To Cart
+                          <ShoppingCart />
                         </button>
                       </div>
                     </div>
@@ -306,12 +313,15 @@ const HomePage = () => {
                     }}
                     disabled={checked.length || radio.length}
                   >
-                    {loading ? "Loading please wait..." : "Load More"}
+                    {loading
+                      ? "Loading please wait..."
+                      : "Want to Load More Products?"}
                   </button>
                 )}
             </div>
           </div>
         </div>
+        <ScrollToTopButton />
       </div>
     </Layout>
   );

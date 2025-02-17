@@ -2,6 +2,7 @@ import React from "react";
 import Layout from "./../components/Layout/Layout";
 import { useSearch } from "../context/Search";
 import { useNavigate } from "react-router-dom";
+import ScrollToTopButton from "../components/ScrollToTop";
 
 const Searched = () => {
   const navigate = useNavigate();
@@ -66,6 +67,7 @@ const Searched = () => {
             )}
           </div>
         </div>
+        <ScrollToTopButton />
       </div>
     </Layout>
   );

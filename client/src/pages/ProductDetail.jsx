@@ -2,8 +2,10 @@ import React, { useState, useEffect } from "react";
 import Layout from "../components/Layout/Layout";
 import toast from "react-hot-toast";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useCart } from "../context/Cart";
+import { CircleEllipsis, ShoppingCart } from "lucide-react";
+import ScrollToTopButton from "../components/ScrollToTop";
 
 const API = import.meta.env.VITE_API || "http://localhost:8000";
 
@@ -23,6 +25,16 @@ axiosInstance.interceptors.request.use(
 );
 
 const ProductDetail = () => {
+  const navigate = useNavigate();
+  const [zoomPosition, setZoomPosition] = useState({ x: 50, y: 50 });
+  const [isZooming, setIsZooming] = useState(false);
+
+  const handleMouseMove = (e) => {
+    const { left, top, width, height } = e.target.getBoundingClientRect();
+    const x = ((e.clientX - left) / width) * 100;
+    const y = ((e.clientY - top) / height) * 100;
+    setZoomPosition({ x, y });
+  };
   const [product, setProduct] = useState({});
   const [relatedProducts, setRelatedProducts] = useState([]);
   const params = useParams();
@@ -64,39 +76,54 @@ const ProductDetail = () => {
   return (
     <Layout>
       <div className="container py-5">
-        <div className="row">
-          {/* Product Image */}
-          <div className="col-md-5 col-12 d-flex justify-content-center mb-4">
+        <div className="row g-4">
+          {/* Product Image Section */}
+          <div
+            className="col-md-5 col-12 d-flex justify-content-center   align-items-center position-relative rounded-3 overflow-hidden"
+            onMouseMove={handleMouseMove}
+            onMouseEnter={() => setIsZooming(true)}
+            onMouseLeave={() => setIsZooming(false)}
+            style={{
+              cursor: "zoom-in",
+              maxHeight: "500px",
+            }}
+          >
             <img
-              className="img-fluid rounded shadow-lg"
+              className={`img-fluid  zoomable-image transition-all ${
+                isZooming ? "zooming" : ""
+              }`}
               src={
                 product._id
                   ? `${API}/api/v1/product/product-photo/${product._id}`
-                  : ""
+                  : "/default-image.jpg"
               }
               alt={product.name || "Product Image"}
+              onError={(e) => (e.target.src = "/default-image.jpg")}
               style={{
-                maxHeight: "400px", // Control height for larger screens
-                width: "100%",
-                objectFit: "cover",
+                transformOrigin: `${zoomPosition.x}% ${zoomPosition.y}%`,
+                transition: "transform 0.3s ease-in-out",
               }}
-              onError={(e) => (e.target.src = "/default-image.jpg")} // Fallback image
             />
           </div>
 
-          {/* Product Info */}
+          {/* Product Info Section */}
           <div
             key={product._id}
             className="col-md-7 col-12 d-flex flex-column justify-content-center align-items-start px-4"
           >
-            <h1 className="display-4 mb-3 text-primary">{product.name}</h1>
-            <p className="lead text-muted mb-3">{product.description}</p>
-            <h5 className="text-black mb-4">
+            <h1 className="display-5 mb-3 text-primary fw-bold">
+              {product.name}
+            </h1>
+            <p className="lead text-muted fw-semibold mb-3">
+              {product.description}
+            </p>
+            <h5 className="text-black mb-3">
               Category: {product?.category?.name}
             </h5>
             <h3 className="text-success fw-bold mb-4">{`Price: $ ${product.price}`}</h3>
+
             <button
-              className="btn btn-primary btn-block mt-2 w-20"
+              className="btn btn-primary fw-bold btn-lg w-40 shadow-sm"
               onClick={() => {
                 setCart([...cart, product]);
                 localStorage.setItem(
@@ -106,7 +133,8 @@ const ProductDetail = () => {
                 toast.success("Item added to your Cart");
               }}
             >
-              Add To Cart
+              {" "}
+              <ShoppingCart className="me-1" /> Add To Cart
             </button>
           </div>
         </div>
@@ -114,7 +142,7 @@ const ProductDetail = () => {
         {/* Similar Products Section */}
         <div className="container mt-5">
           <div className="text-center">
-            <h3 className="mb-4 fw-bold">You Might Also Like</h3>
+            <h3 className="fw-bold text-dark mb-4">You Might Also Like</h3>
           </div>
 
           <div className="row justify-content-center g-4">
@@ -145,17 +173,35 @@ const ProductDetail = () => {
                       <p className="card-text text-muted small text-truncate">
                         {p.description || "No Description"}
                       </p>
-                      <h5 className="text-black mb-4">
+                      <h6 className="text-black">
                         Category: {p.category?.name || "Unknown"}
-                      </h5>
-                      <h5 className="fw-bold text-success">
-                        $ {p.price || "No Price"}
+                      </h6>
+                      <h5 className="fw-bold text-success mb-3">
+                        Price: $ {p.price || "No Price"}
                       </h5>
 
-                      {/* Add to Cart Button */}
-                      <button className="btn btn-primary mt-3 w-100 fw-bold shadow-sm">
-                        Add To Cart
-                      </button>
+                      <div className="d-grid gap-2">
+                        <button
+                          className="btn btn-primary fw-semibold rounded fs-6"
+                          onClick={() => navigate(`/product/${p.slug}`)}
+                        >
+                          <CircleEllipsis className="me-1" />
+                          More Details
+                        </button>
+                        <button
+                          className="btn btn-success mt-2 fw-semibold rounded fs-6 "
+                          onClick={() => {
+                            setCart([...cart, p]);
+                            localStorage.setItem(
+                              "cart",
+                              JSON.stringify([...cart, p])
+                            );
+                            toast.success("Item added to your Cart");
+                          }}
+                        >
+                          <ShoppingCart />
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -167,6 +213,7 @@ const ProductDetail = () => {
             )}
           </div>
         </div>
+        <ScrollToTopButton />
       </div>
     </Layout>
   );

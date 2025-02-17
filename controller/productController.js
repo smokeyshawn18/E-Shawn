@@ -71,7 +71,7 @@ export const getproductController = async (req, res) => {
       .find({})
       .populate("category")
       .select("-photo")
-      .limit(12)
+
       .sort({ createdAt: -1 });
     res.status(200).send({
       success: true,
@@ -176,7 +176,7 @@ export const updateProductController = async (req, res) => {
         return res.status(500).send({ error: "Quantity is required" });
       case !shipping:
         return res.status(500).send({ error: "Shipping is required" });
-      case photo && photo.size > 10000000:
+      case photo && photo.size > 1000000:
         return res.status(500).send({ error: "Image should be less than 1MB" });
     }
     const product = await productModel.findByIdAndUpdate(
@@ -257,7 +257,7 @@ export const productCountController = async (req, res) => {
 
 export const productListController = async (req, res) => {
   try {
-    const perPage = 6;
+    const perPage = 8;
     const page = req.params.page ? req.params.page : 1;
     const products = await productModel
       .find({})

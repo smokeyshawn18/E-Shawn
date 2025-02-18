@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useSearch } from "../../context/Search";
 import axios from "axios";
+import { Search } from "react-bootstrap-icons";
 
 const SearchInput = () => {
   const [values, setValues] = useSearch();
@@ -46,21 +47,29 @@ const SearchInput = () => {
   };
 
   return (
-    <div className="d-flex justify-content-center ms-5 mb-2">
-      <form className="d-flex align-items-center" onSubmit={handleSubmit}>
-        <input
-          className="form-control me-2"
-          type="search"
-          placeholder="Search"
-          aria-label="Search"
-          value={values.keyword} // ✅ Controlled input
-          onChange={(e) => setValues({ ...values, keyword: e.target.value })} // ✅ State update
-        />
-        <button className="btn btn-outline-success" type="submit">
-          Search
-        </button>
-      </form>
-    </div>
+    <>
+      <div className="search-container d-flex align-items-center mt-2 mb-2">
+        <form
+          className="search-box input-group shadow-sm"
+          onSubmit={handleSubmit}
+        >
+          <input
+            type="search"
+            className="form-control border-0 shadow-lg px-4 py-2 rounded-start-pill"
+            placeholder="Search products..."
+            aria-label="Search"
+            value={values.keyword}
+            onChange={(e) => setValues({ ...values, keyword: e.target.value })}
+          />
+          <button
+            className="btn search-btn px-4 rounded-end-pill"
+            type="submit"
+          >
+            <Search className="fs-4" />
+          </button>
+        </form>
+      </div>
+    </>
   );
 };
 

@@ -5,6 +5,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import moment from "moment";
 import { Select } from "antd";
+import { useAuth } from "../../context/Auth";
 const { Option } = Select;
 const AdminOrders = () => {
   const [status, setStatus] = useState([
@@ -108,6 +109,7 @@ const AdminOrders = () => {
                           <th>Buyer</th>
                           <th>Date</th>
                           <th>Items</th>
+                          <th>Address</th>
                           <th>Quantity</th>
                         </tr>
                       </thead>
@@ -144,6 +146,10 @@ const AdminOrders = () => {
                               .map((product) => product.name)
                               .join(", ")}
                           </td>
+                          <td>
+                            {order?.buyer?.address || "No Address Provided"}
+                          </td>
+
                           <td>{order?.products?.length}</td>
                         </tr>
                       </tbody>

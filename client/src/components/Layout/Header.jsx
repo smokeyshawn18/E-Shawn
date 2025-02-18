@@ -15,7 +15,7 @@ const Header = () => {
   const [auth, setAuth] = useAuth();
 
   return (
-    <nav className="navbar navbar-expand-lg bg-white shadow position-sticky top-0 start-0 end-0 z-3">
+    <nav className="navbar navbar-expand-lg bg-white shadow position-sticky top-0 start-0 end-0 z-3 ">
       <div className="container-fluid d-flex justify-content-between align-items-center">
         {/* Logo and Brand */}
         <Link to="/" className="navbar-brand d-flex align-items-center">
@@ -25,15 +25,14 @@ const Header = () => {
             className="img-fluid rounded-circle"
             style={{ width: "50px", height: "50px" }}
           />
-          <span className="fs-4 ms-2 fw-bold text-dark">e-Shawn</span>
+          <span className="fs-4 ms-2 fw-bold text-dark">E-Shawn</span>
         </Link>
 
-        {/* Search Input */}
         <SearchInput />
 
         {/* Toggler for Mobile View */}
         <button
-          className="navbar-toggler"
+          className="navbar-toggler position-absolute top-0 end-0 m-3"
           type="button"
           data-bs-toggle="collapse"
           data-bs-target="#navbarNav"

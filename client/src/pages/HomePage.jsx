@@ -11,6 +11,7 @@ import "../styles/homepage.css";
 import Logo from "../assets/Logo.png";
 import { ShoppingCart, CircleEllipsis } from "lucide-react";
 import ScrollToTopButton from "../components/ScrollToTop";
+import DynamicText from "../components/DynamicText";
 
 const HomePage = () => {
   const [cart, setCart] = useCart();
@@ -27,7 +28,6 @@ const HomePage = () => {
 
   const API = import.meta.env.VITE_API || "http://localhost:8000";
 
-  //
   const getAuthToken = () => {
     const token = localStorage.getItem("auth");
     return token ? JSON.parse(token)?.token : null;
@@ -238,12 +238,11 @@ const HomePage = () => {
                   objectFit: "cover",
                 }}
               />
-              <h1 className="fw-bold text-success mb-5 fs-2">
-                Welcome to <span className="text-primary fw-bold">E-Shawn</span>
-              </h1>
+              <DynamicText />
             </div>
             {/* Products Section */}
-            <h1 className="text-center mt-4 mb-3 fw-bold">All Products</h1>
+            <h1 className="text-center mt-4 mb-2 fw-bold">All Products</h1>
+            <hr></hr>
             <div className="row">
               {products && products.length > 0 ? (
                 products.map((p) => (

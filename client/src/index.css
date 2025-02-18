@@ -36,12 +36,6 @@ body {
   width: 100%;
 }
 
-/* Add padding to prevent content from touching the screen edges */
-/* .container-fluid {
-  padding-left: 15px;
-  padding-right: 15px;
-} */
-
 .navbar-brand {
   font-weight: bold;
   font-family: "Roboto", sans-serif;
@@ -92,7 +86,7 @@ body {
 /* Navbar responsiveness */
 @media (max-width: 768px) {
   .navbar {
-    font-size: 14px;
+    font-size: 16px;
   }
 
   .navbar-brand {
@@ -190,4 +184,38 @@ body {
 
 .scroll-to-top:hover {
   background-color: #0056b3;
+}
+
+.search-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.search-box {
+  max-width: 300px;
+  width: 100%;
+  border-radius: 50px;
+
+  background: white;
+}
+
+.search-box input {
+  border-radius: 50px 0 0 50px;
+  border: 2px solid #6cabdd;
+}
+
+.search-box input:focus {
+  border-color: #0d6efd;
+  box-shadow: 0 0 8px rgba(13, 110, 253, 0.5);
+}
+
+.search-btn {
+  background: #0d6efd;
+  color: white;
+  border-radius: 0 50px 50px 0;
+}
+
+.search-btn:hover {
+  background: #0056b3;
 }

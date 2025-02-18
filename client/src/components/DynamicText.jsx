@@ -23,7 +23,7 @@ const DynamicText = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       setIndex((prevIndex) => (prevIndex + 1) % names.length);
-    }, 2000); // Change every 3 seconds
+    }, 3000); // Change every 3 seconds
 
     return () => clearInterval(interval);
   }, []);
@@ -76,7 +76,7 @@ const DynamicText = () => {
                 initial="initial"
                 animate="animate"
                 exit="exit"
-                transition={{ duration: 0.7, ease: "easeInOut" }}
+                transition={{ duration: 0.8, ease: "easeInOut" }}
                 className="img-fluid rounded shadow-lg"
                 style={{
                   height: "100%",

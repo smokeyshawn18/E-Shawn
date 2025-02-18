@@ -144,7 +144,7 @@ const AdminOrders = () => {
                           <td>
                             {order.products
                               .map((product) => product.name)
-                              .join(", ")}
+                              .join(" & ")}
                           </td>
                           <td>
                             {order?.buyer?.address || "No Address Provided"}

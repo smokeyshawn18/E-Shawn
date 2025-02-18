@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { useCart } from "../context/Cart";
 import "../styles/homepage.css";
 import Logo from "../assets/Logo.png";
-import { ShoppingCart, CircleEllipsis } from "lucide-react";
+import { ShoppingCart, CircleEllipsis, Info } from "lucide-react";
 import ScrollToTopButton from "../components/ScrollToTop";
 import DynamicText from "../components/DynamicText";
 
@@ -71,7 +71,7 @@ const HomePage = () => {
       const { data } = await axiosInstance.get(
         `${API}/api/v1/category/get-categories`
       );
-      setLoadingCategories(false); // Stop loading once categories are fetched
+      setLoadingCategories(false);
 
       if (data?.success) {
         setCategories(data.categories);
@@ -170,6 +170,7 @@ const HomePage = () => {
     <Layout title="All Products - With Best Price!">
       <div className="container-fluid px-lg-5 py-4">
         <div className="row">
+          {/* Filter Section */}
           <div className="col-lg-3 col-md-4 col-sm-12 mb-4">
             <div className="filter-section p-4 border rounded shadow-lg bg-white">
               {/* Category Filter */}
@@ -204,7 +205,7 @@ const HomePage = () => {
                 onChange={(e) => setRadio(e.target.value)}
               >
                 {Prices?.map((p) => (
-                  <div key={p._id} className="mb-2 fw-bold ">
+                  <div key={p._id} className="mb-2 fw-bold">
                     <Radio
                       className="text-success fw-bold fs-6"
                       value={p.array}
@@ -231,26 +232,33 @@ const HomePage = () => {
             <div className="d-flex flex-wrap align-items-center justify-content-center gap-3 text-center">
               <img
                 src={Logo}
-                alt="E-SHawn-Logo"
+                alt="E-SHawn Logo"
                 className="img-fluid rounded shadow-sm"
                 style={{
-                  height: "250px",
+                  height: "100px",
                   objectFit: "cover",
                 }}
               />
-              <DynamicText />
+              <h4>Shop, Save, Smile. Only at E-Shawn!</h4>
             </div>
+
+            <DynamicText />
+
             {/* Products Section */}
             <h1 className="text-center mt-4 mb-2 fw-bold">All Products</h1>
-            <hr></hr>
+            <hr />
             <div className="row">
               {products && products.length > 0 ? (
                 products.map((p) => (
                   <div
                     key={p._id}
-                    className="col-12 col-sm-6 col-md-4 col-lg-3 mb-4"
+                    // Adjusting column sizes for responsiveness
+                    className="col-6 col-md-4 col-lg-3 mb-4"
                   >
-                    <div className="card h-100 shadow-sm border-light rounded overflow-hidden">
+                    <div
+                      className="card h-100 shadow-sm border-light rounded overflow-hidden"
+                      onClick={() => navigate(`/product/${p.slug}`)}
+                    >
                       <img
                         className="card-img-top img-fluid"
                         src={`${API}/api/v1/product/product-photo/${p._id}`}
@@ -267,17 +275,16 @@ const HomePage = () => {
                         <p className="card-text text-muted text-truncate">
                           {p.description || "No Description"}
                         </p>
-                        <h5 className="card-title">
-                          $ {p.price || "No Price"}
-                        </h5>
+                        <h5 className="card-title">${p.price || "No Price"}</h5>
                         <button
-                          className="btn btn-primary btn-block mb-2 fw-bold"
+                          className="btn btn-light border border-dark btn-block mb-2 fw-bold"
                           onClick={() => navigate(`/product/${p.slug}`)}
                         >
-                          <CircleEllipsis className="me-1" /> More Details
+                          More Info
+                          <Info className="ms-1" />
                         </button>
                         <button
-                          className="btn btn-success fs-6 mt-2"
+                          className="btn btn-success fs-6 mt-auto"
                           onClick={() => {
                             setCart([...cart, p]);
                             localStorage.setItem(
@@ -287,7 +294,7 @@ const HomePage = () => {
                             toast.success("Item added to your Cart");
                           }}
                         >
-                          <ShoppingCart />
+                          Add to Cart
                         </button>
                       </div>
                     </div>
@@ -299,27 +306,27 @@ const HomePage = () => {
             </div>
 
             {/* Load More Button */}
-            <div className="text-center mt-4">
-              {products &&
-                products.length < total &&
-                !checked.length &&
-                !radio.length && (
+            {products &&
+              products.length < total &&
+              !checked.length &&
+              !radio.length && (
+                <div className="text-center mt-4">
                   <button
                     className="btn btn-primary px-4 py-2 fw-bold"
                     onClick={(e) => {
                       e.preventDefault();
                       setPage(page + 1);
                     }}
-                    disabled={checked.length || radio.length}
+                    disabled={loading}
                   >
-                    {loading
-                      ? "Loading please wait..."
-                      : "Want to Load More Products?"}
+                    {loading ? "Loading please wait..." : "Load More Products"}
                   </button>
-                )}
-            </div>
+                </div>
+              )}
           </div>
         </div>
+
+        {/* Scroll to Top Button */}
         <ScrollToTopButton />
       </div>
     </Layout>

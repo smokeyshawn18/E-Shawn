@@ -4,7 +4,7 @@ import toast from "react-hot-toast";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { useCart } from "../context/Cart";
-import { CircleEllipsis, ShoppingCart } from "lucide-react";
+import { CircleEllipsis, Info, ShoppingCart } from "lucide-react";
 import ScrollToTopButton from "../components/ScrollToTop";
 
 const API = import.meta.env.VITE_API || "http://localhost:8000";
@@ -76,6 +76,10 @@ const ProductDetail = () => {
   return (
     <Layout>
       <div className="container py-5">
+        <p className="fs-5 d-block d-sm-none text-dark fw-semibold mb-4">
+          Click to zoom
+        </p>
+
         <div className="row g-4">
           {/* Product Image Section */}
           <div
@@ -109,9 +113,9 @@ const ProductDetail = () => {
           {/* Product Info Section */}
           <div
             key={product._id}
-            className="col-md-7 col-12 d-flex flex-column justify-content-center align-items-start px-4"
+            className="col-md-7 col-12 d-flex flex-column  rounded justify-content-center align-items-start px-4"
           >
-            <h1 className="display-5 mb-3 text-primary fw-bold">
+            <h1 className="display-6 mb-3 text-dark fw-semibold">
               {product.name}
             </h1>
             <p className="lead text-muted fw-semibold mb-3">
@@ -182,11 +186,11 @@ const ProductDetail = () => {
 
                       <div className="d-grid gap-2">
                         <button
-                          className="btn btn-primary fw-semibold rounded fs-6"
+                          className="btn btn-light fw-semibold rounded fs-6 border border-dark"
                           onClick={() => navigate(`/product/${p.slug}`)}
                         >
-                          <CircleEllipsis className="me-1" />
-                          More Details
+                          More Info
+                          <Info className="ms-1" />
                         </button>
                         <button
                           className="btn btn-success mt-2 fw-semibold rounded fs-6 "

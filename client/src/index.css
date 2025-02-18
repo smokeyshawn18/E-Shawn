@@ -219,3 +219,16 @@ body {
 .search-btn:hover {
   background: #0056b3;
 }
+
+.image-container {
+  width: 100%;
+  max-width: 420px;
+  height: 380px;
+}
+
+@media (max-width: 576px) {
+  .image-container {
+    max-width: 300px; /* Decrease width on small screens */
+    height: 280px; /* Decrease height on small screens */
+  }
+}

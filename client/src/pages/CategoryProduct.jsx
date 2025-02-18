@@ -4,7 +4,7 @@ import toast from "react-hot-toast";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { useCart } from "../context/Cart";
-import { CircleEllipsis, ShoppingCart } from "lucide-react";
+import { Info, ShoppingCart } from "lucide-react";
 import ScrollToTopButton from "../components/ScrollToTop";
 
 const CategoryProduct = () => {
@@ -47,7 +47,7 @@ const CategoryProduct = () => {
         <div className="row g-4">
           {products && products.length > 0 ? (
             products.map((p) => (
-              <div key={p._id} className="col-12 col-sm-6 col-md-4 col-lg-3">
+              <div key={p._id} className="col-6 col-sm-6 col-md-4 col-lg-3">
                 <div className="card h-100 shadow-lg border-0 rounded">
                   <img
                     className="card-img-top img-fluid rounded-top"
@@ -71,10 +71,10 @@ const CategoryProduct = () => {
                   </div>
                   <div className="card-footer bg-white border-0 d-flex flex-column gap-2">
                     <button
-                      className="btn btn-primary fw-semibold"
+                      className="btn btn-light fw-semibold"
                       onClick={() => navigate(`/product/${p.slug}`)}
                     >
-                      <CircleEllipsis className="me-1" /> More Details
+                      More Info <Info />
                     </button>
                     <button
                       className="btn btn-success btn-block mt-2 w-100"
@@ -97,6 +97,8 @@ const CategoryProduct = () => {
             <p className="text-center text-danger">No products found.</p>
           )}
         </div>
+
+        {/* Scroll to Top Button */}
         <ScrollToTopButton />
       </div>
     </Layout>

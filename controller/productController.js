@@ -5,6 +5,7 @@ import fs from "fs";
 import braintree from "braintree";
 import dotenv from "dotenv";
 import orderModel from "../models/orderModel.js";
+import util from "util"; // Import the `util` module
 
 dotenv.config();
 
@@ -370,34 +371,45 @@ export const braintreeTokenController = async (req, res) => {
 export const braintreePaymentController = async (req, res) => {
   try {
     const { cart, nonce } = req.body;
-    let total = 0;
-    cart.map((i) => {
-      total += i.price;
-    });
-    let newTransaction = gateway.transaction.sale(
+
+    // Calculate total properly
+    const total = cart.reduce((sum, item) => sum + item.price, 0);
+
+    gateway.transaction.sale(
       {
-        amount: total,
+        amount: total.toFixed(2), // Ensure proper formatting
         paymentMethodNonce: nonce,
-        options: {
-          submitForSettlement: true,
-        },
+        options: { submitForSettlement: true },
       },
-      function (error, result) {
-        if (result) {
-          const order = new orderModel({
+      async (error, result) => {
+        if (error) {
+          return res
+            .status(500)
+            .json({ success: false, message: "Payment failed", error });
+        }
+
+        if (result?.success) {
+          await new orderModel({
             products: cart,
             payment: result,
             buyer: req.user._id,
           }).save();
-          res.json({ ok: true });
+
+          return res.json({ success: true, message: "Payment successful" });
         } else {
-          res.status(500).send(error);
+          return res
+            .status(400)
+            .json({
+              success: false,
+              message: "Transaction failed",
+              error: result?.message,
+            });
         }
       }
     );
   } catch (error) {
     console.log(error);
-    res.status(400).send({
+    res.status(400).json({
       success: false,
       message: "Error in payment",
       error,

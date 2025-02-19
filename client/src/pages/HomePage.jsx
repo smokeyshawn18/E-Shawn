@@ -255,10 +255,7 @@ const HomePage = () => {
                     // Adjusting column sizes for responsiveness
                     className="col-6 col-md-4 col-lg-3 mb-4"
                   >
-                    <div
-                      className="card h-100 shadow-sm border-light rounded overflow-hidden"
-                      onClick={() => navigate(`/product/${p.slug}`)}
-                    >
+                    <div className="card h-100 shadow-sm border-light rounded overflow-hidden">
                       <img
                         className="card-img-top img-fluid"
                         src={`${API}/api/v1/product/product-photo/${p._id}`}

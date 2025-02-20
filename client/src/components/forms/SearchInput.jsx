@@ -48,7 +48,7 @@ const SearchInput = () => {
 
   return (
     <>
-      <div className="search-container d-flex align-items-center mt-2 mb-2">
+      <div className="search-container d-flex align-items-center ms-3 mt-2 mb-2">
         <form
           className="search-box input-group shadow-sm"
           onSubmit={handleSubmit}

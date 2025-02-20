@@ -13,6 +13,7 @@ import Layout from "../../components/Layout/Layout";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { useAuth } from "../../context/Auth";
+import moment from "moment";
 
 const Users = () => {
   const [users, setUsers] = useState([]);
@@ -75,6 +76,7 @@ const Users = () => {
                           <th>Email</th>
                           <th>Phone</th>
                           <th>Role</th>
+                          <th>Register At</th>
 
                           <th>Actions</th>
                         </tr>
@@ -96,7 +98,7 @@ const Users = () => {
                               {user.phone}
                             </td>
                             <td>{user.role || "User"}</td>
-
+                            <td>{moment(user?.createdAt).fromNow()}</td>
                             <td>
                               <button className="btn btn-sm btn-warning me-2">
                                 <FaEdit /> Edit

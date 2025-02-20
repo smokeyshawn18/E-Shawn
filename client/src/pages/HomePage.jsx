@@ -277,7 +277,7 @@ const HomePage = () => {
                           className="btn btn-light border border-dark btn-block mb-2 fw-bold"
                           onClick={() => navigate(`/product/${p.slug}`)}
                         >
-                          More Info
+                          More
                           <Info className="ms-1" />
                         </button>
                         <button
@@ -291,7 +291,7 @@ const HomePage = () => {
                             toast.success("Item added to your Cart");
                           }}
                         >
-                          Add to Cart
+                          <ShoppingCart />
                         </button>
                       </div>
                     </div>

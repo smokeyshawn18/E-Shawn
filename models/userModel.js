@@ -1,5 +1,7 @@
 import mongoose from "mongoose";
 
+// schema using mongoose
+
 const userSchema = new mongoose.Schema(
   {
     name: {
@@ -24,7 +26,7 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    answer:{
+    answer: {
       type: String,
       required: [true, "Answer is required"],
     },
@@ -33,7 +35,7 @@ const userSchema = new mongoose.Schema(
       default: 0,
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 export default mongoose.model("users", userSchema);

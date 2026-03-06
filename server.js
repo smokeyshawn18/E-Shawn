@@ -26,7 +26,7 @@ app.use(express.static(path.join(__dirname, "./client/build")));
 
 app.use(
   cors({
-    origin: ["https://e-shawn.vercel.app", "http://localhost:5173"], // Allow both production & dev frontend
+    origin: ["https://e-shawn-1.onrender.com", "http://localhost:5173"], // Allow both production & dev frontend
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true, // If using cookies or authentication jwt

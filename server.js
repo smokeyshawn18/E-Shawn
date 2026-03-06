@@ -29,8 +29,8 @@ app.use(
     origin: ["https://e-shawn.vercel.app", "http://localhost:5173"], // Allow both production & dev frontend
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
-    credentials: true, // If using cookies or authentication
-  })
+    credentials: true, // If using cookies or authentication jwt
+  }),
 );
 
 // rest apis
